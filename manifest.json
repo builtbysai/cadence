@@ -1,11 +1,12 @@
 {
-  "name": "Cadence \u2014 Cycle, Intimacy & Psychobiology Studio",
+  "name": "Cadence",
   "short_name": "Cadence",
-  "description": "Minimalist, zero-noise, local-first menstrual cycle, intimacy, and psychoneuroendocrinology PWA.",
+  "description": "Minimalist cycle, intimacy, and body literacy studio.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#F7F4EF",
-  "theme_color": "#F7F4EF",
+  "background_color": "#F7F3EE",
+  "theme_color": "#F7F3EE",
   "orientation": "portrait-primary",
   "icons": [
     {

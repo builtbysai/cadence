@@ -1,7 +1,6 @@
 (function () {
   'use strict';
 
-  // --- DATE UTILITIES ---
   function getTodayISO() {
     const now = new Date();
     const y = now.getFullYear();
@@ -44,9 +43,23 @@
     return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
   }
 
+  function copyTextToClipboard(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(function () {});
+        return;
+      }
+    } catch (e) {}
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+  }
+
   const TODAY_ISO = getTodayISO();
 
-  // --- TAXONOMIES (MOOD, SOMATIC, INTIMACY, CERVICAL FLUID) ---
   const MOOD_TAGS = [
     'Calm', 'Focused', 'Social', 'Grounded', 'Creative',
     'Warm / Affectionate', 'Sensitive', 'Introverted', 'Irritable', 'Anxious', 'Brain Fog', 'Low Drive'
@@ -84,73 +97,71 @@
     pmdd: 'PMDD / Perimenopause'
   };
 
-  // --- EDUCATIONAL ATLAS MODULES ---
   const ATLAS_MODULES = [
     {
       cat: 'neuro',
       phase: 'follicular',
-      badge: 'Neuroendocrinology • NIH / PMC',
+      badge: 'Brain & Estrogen • NIH / PMC',
       title: 'Estradiol (E₂), Synaptic Plasticity & Dopamine Tone',
       summary: 'As ovarian follicles mature during the follicular and ovulatory phases, rising 17β-estradiol increases dendritic spine density in the hippocampus and prefrontal cortex while upregulating dopamine (D₂) and serotonin (5-HT₂A) receptor availability.',
-      takeaway: 'Why it matters: Verbal fluency, working memory, reward sensitivity, and intrinsic motivation naturally climb as estradiol approaches its mid-cycle zenith.',
+      takeaway: 'In daily life: Verbal fluency, working memory, reward sensitivity, and intrinsic motivation naturally climb as estradiol approaches its mid-cycle peak.',
       sourceLabel: 'PMC6309888: Reproductive Steroid Regulation of Mood & Behavior',
       svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><path d="M8 50 Q55 46, 95 10 T172 34" fill="none" stroke="#3E7A6E" stroke-width="2.5"/><circle cx="95" cy="10" r="4" fill="#C4862D"/><text x="65" y="26" font-size="9" font-family="JetBrains Mono" fill="currentColor">E₂ Peak → Dopamine</text></svg>'
     },
     {
       cat: 'neuro',
       phase: 'luteal',
-      badge: 'GABA-A Plasticity • PMDD Science',
-      title: 'Progesterone, Allopregnanolone & Late-Luteal Withdrawal',
-      summary: 'After ovulation, the corpus luteum secretes progesterone, which converts in the brain into allopregnanolone—a potent positive allosteric modulator of GABA-A receptors (the brain’s primary calming brake). In the final 4–5 days before menstruation, rapid withdrawal of allopregnanolone alters GABA-A subunit configuration.',
-      takeaway: 'Why it matters: Luteal mood sensitivity or PMDD is not caused by "too many hormones," but by nervous-system sensitivity to the speed of neurosteroid withdrawal.',
+      badge: 'GABA-A Soothing • Luteal Care',
+      title: 'Progesterone, Allopregnanolone & Late-Luteal Sensitivity',
+      summary: 'After ovulation, the corpus luteum secretes progesterone, which converts in the brain into allopregnanolone—a potent positive modulator of calming GABA-A receptors. In the final 4–5 days before menstruation, rapid withdrawal of allopregnanolone alters GABA-A receptor subunits.',
+      takeaway: 'In daily life: Premenstrual sensitivity or PMDD is not caused by "excess hormones," but by how quickly calming neurosteroids drop at the end of the cycle.',
       sourceLabel: 'PMC6594874: Allopregnanolone & Reproductive Psychiatry',
-      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><path d="M8 48 L75 48 Q115 8, 145 16 L172 52" fill="none" stroke="#7C5879" stroke-width="2.5"/><line x1="145" y1="12" x2="145" y2="54" stroke="#C25949" stroke-dasharray="2 2"/><text x="85" y="45" font-size="9" font-family="JetBrains Mono" fill="currentColor">GABA-A Withdrawal</text></svg>'
+      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><path d="M8 48 L75 48 Q115 8, 145 16 L172 52" fill="none" stroke="#7C5879" stroke-width="2.5"/><line x1="145" y1="12" x2="145" y2="54" stroke="#C25949" stroke-dasharray="2 2"/><text x="85" y="45" font-size="9" font-family="JetBrains Mono" fill="currentColor">GABA-A Shift</text></svg>'
     },
     {
       cat: 'sex',
       phase: 'ovulatory',
-      badge: 'Sexual Psychophysiology',
+      badge: 'Intimacy & Desire',
       title: 'Spontaneous vs. Responsive Desire Across the Cycle',
-      summary: 'Research on the Dual-Control Model of sexual response shows two distinct desire pathways: Spontaneous desire (internal spark) peaks during the periovulatory window driven by peak estradiol and a mid-cycle ovarian testosterone pulse. Responsive desire (arousal emerging after unhurried sensual context and emotional safety) predominates in the luteal phase.',
-      takeaway: 'Why it matters: Tracking both spontaneous libido and receptive intimacy removes pressure and reveals your true personal desire curve.',
+      summary: 'Sexual response follows two healthy pathways: Spontaneous desire (an internal spark) peaks around ovulation driven by peak estradiol and a brief ovarian testosterone pulse. Responsive desire (arousal that blooms *after* unhurried sensual touch, warmth, and emotional safety) predominates in the luteal phase.',
+      takeaway: 'In daily life: Honoring responsive desire in the luteal phase removes pressure and deepens intimacy across the entire month.',
       sourceLabel: 'PMC8906247: Hormonal Modulation of Libido & Affect',
-      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><path d="M10 46 Q65 40, 90 8 Q115 40, 170 36" fill="none" stroke="#C95B78" stroke-width="2.5"/><circle cx="90" cy="8" r="4.5" fill="#C95B78"/><text x="48" y="52" font-size="9" font-family="JetBrains Mono" fill="currentColor">Ovulatory Androgen Pulse</text></svg>'
+      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><path d="M10 46 Q65 40, 90 8 Q115 40, 170 36" fill="none" stroke="#C95B78" stroke-width="2.5"/><circle cx="90" cy="8" r="4.5" fill="#C95B78"/><text x="48" y="52" font-size="9" font-family="JetBrains Mono" fill="currentColor">Spontaneous vs Responsive</text></svg>'
     },
     {
       cat: 'fam',
       phase: 'ovulatory',
-      badge: 'Symptothermal Biomarkers • Mayo Clinic',
-      title: 'Basal Body Temperature (BBT) & Spinnbarkeit Cervical Fluid',
-      summary: 'Estrogen stimulates cervical crypts to produce clear, stretchy, alkaline "egg-white" mucus (spinnbarkeit) before ovulation, nourishing sperm for up to 5 days. Once ovulation occurs, progesterone triggers hypothalamic thermogenesis, raising waking BBT by +0.4°F to +0.8°F (+0.2°C–0.4°C) for the remainder of the luteal phase.',
-      takeaway: 'Why it matters: Cervical fluid warns you that ovulation is approaching; a sustained 3-day BBT thermal shift confirms ovulation has completed.',
+      badge: 'Symptothermal Method • Mayo Clinic',
+      title: 'Waking Basal Temperature (BBT) & Cervical Fluid',
+      summary: 'Estrogen stimulates cervical crypts to produce clear, stretchy, alkaline "egg-white" fluid before ovulation, keeping sperm viable for up to 5 days. Once ovulation occurs, progesterone warms the hypothalamus, raising waking BBT by +0.4°F to +0.8°F until your next period.',
+      takeaway: 'In daily life: Fertile fluid tells you ovulation is approaching; a 3-day sustained temperature rise confirms ovulation has completed.',
       sourceLabel: 'PMC11837971 & Mayo Clinic Symptothermal Guidelines',
-      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><polyline points="10,42 40,44 70,45 92,40 105,20 135,18 170,19" fill="none" stroke="#C4862D" stroke-width="2.5"/><line x1="10" y1="32" x2="170" y2="32" stroke="currentColor" stroke-opacity="0.25" stroke-dasharray="3 3"/><text x="102" y="14" font-size="9" font-family="JetBrains Mono" fill="currentColor">+0.5°F Biphasic Shift</text></svg>'
+      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><polyline points="10,42 40,44 70,45 92,40 105,20 135,18 170,19" fill="none" stroke="#C4862D" stroke-width="2.5"/><line x1="10" y1="32" x2="170" y2="32" stroke="currentColor" stroke-opacity="0.25" stroke-dasharray="3 3"/><text x="102" y="14" font-size="9" font-family="JetBrains Mono" fill="currentColor">+0.5°F Thermal Shift</text></svg>'
     },
     {
       cat: 'clinical',
       phase: 'menstrual',
-      badge: 'ACOG Clinical Vital Sign',
-      title: 'When Cycle Patterns Warrant a Clinical Evaluation',
-      summary: 'The American College of Obstetricians and Gynecologists (ACOG) classifies the menstrual cycle as a fifth vital sign. Persistent cycle lengths <21 days or >35 days, bleeding >7 days, pelvic pain during sex (dyspareunia), or luteal fases <10 days can help clinicians evaluate PCOS, endometriosis, thyroid dysfunction, or perimenopause.',
-      takeaway: 'Why it matters: Exporting a clean multi-month symptom, BBT, and cycle regularity log turns a 10-minute medical visit into an evidence-backed consultation.',
+      badge: 'ACOG Fifth Vital Sign',
+      title: 'What Your Cycle Tells a Doctor',
+      summary: 'The American College of Obstetricians and Gynecologists (ACOG) recognizes the menstrual cycle as a vital sign alongside blood pressure and heart rate. Persistent cycles <21 or >35 days, bleeding >7 days, pelvic pain during intimacy (dyspareunia), or luteal phases <10 days help clinicians evaluate thyroid health, PCOS, endometriosis, or perimenopause.',
+      takeaway: 'In daily life: Use the Vital Sign Summary in Cycle History to bring concrete, multi-cycle data to your next appointment.',
       sourceLabel: 'ACOG Committee Opinion: Menstrual Cycle as a Vital Sign',
       svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><rect x="14" y="18" width="32" height="26" rx="4" fill="#C25949" fill-opacity="0.25" stroke="#C25949"/><rect x="64" y="18" width="32" height="26" rx="4" fill="#3E7A6E" fill-opacity="0.25" stroke="#3E7A6E"/><rect x="114" y="18" width="46" height="26" rx="4" fill="#C4862D" fill-opacity="0.25" stroke="#C4862D"/></svg>'
     },
     {
       cat: 'clinical',
       phase: 'luteal',
-      badge: '2026 Privacy Architecture • Mozilla',
-      title: 'Why Zero-Cloud Local Storage Protects Reproductive Autonomy',
-      summary: 'Following 2025–2026 privacy rulings and Mozilla’s reproductive tracker audits, cloud-synced period and intimacy logs remain vulnerable to third-party SDK leaks or legal subpoenas. Cadence follows Euki’s 10/10 local-only model: your data lives strictly inside your browser’s local storage and portable JSON exports.',
-      takeaway: 'Why it matters: You get Bearable’s symptom correlation depth, Clue’s clinical rigor, and Natural Cycles’ BBT charting—with zero cloud exposure.',
-      sourceLabel: 'Mozilla Foundation 2026 Period Tracker Privacy Review',
-      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><circle cx="90" cy="30" r="18" fill="none" stroke="#3E7A6E" stroke-width="2"/><path d="M84 30 L88 34 L97 25" fill="none" stroke="#3E7A6E" stroke-width="2"/></svg>'
+      badge: 'Metabolism & Nutrition',
+      title: 'Why Luteal Hunger Is Biological, Not Lack of Willpower',
+      summary: 'During the luteal phase, progesterone stimulates thermogenesis and raises resting energy expenditure by 5% to 10% (~150–250 kcal/day), while declining estrogen slightly increases blood-sugar sensitivity. Craving complex carbohydrates is the brain’s adaptive way of supporting tryptophan transport for serotonin synthesis.',
+      takeaway: 'In daily life: Adding slow-burning complex carbs, protein, and magnesium in the luteal phase stabilizes both blood sugar and mood.',
+      sourceLabel: 'Endocrine & Metabolic Regulation Across the Luteal Phase',
+      svg: '<svg viewBox="0 0 180 60" class="w-full h-14"><path d="M12 44 L85 44 Q125 14, 168 18" fill="none" stroke="#7C5879" stroke-width="2.5"/><text x="78" y="38" font-size="9" font-family="JetBrains Mono" fill="currentColor">+150–250 kcal/day</text></svg>'
     }
   ];
 
-  // --- STATE INITIALIZATION (NO PROFILES BY DEFAULT!) ---
   const STORAGE_KEY = 'cadence_pwa_state_v2';
-  let chartMode = 'hormones'; // 'hormones' or 'bbt'
+  let chartMode = 'hormones';
   let atlasCategory = 'all';
   let onboardGoal = 'rhythm';
   let onboardColor = '#C25949';
@@ -164,15 +175,14 @@
       selectedCycleDay: null,
       selectedCalendarDate: TODAY_ISO,
       calendarMonthOffset: 0,
-      profiles: [] // Explicitly empty by default so user onboards!
+      profiles: []
     };
   }
 
-  // Optional sample household generator if user clicks "load sample household" or "Reset Demo Profiles"
   function buildSampleHouseholdState() {
-    const mayaLast = addDays(TODAY_ISO, -13);   // Day 14 of 28 (Ovulatory)
-    const elenaLast = addDays(TODAY_ISO, -22);  // Day 23 of 30 (Luteal)
-    const chloeLast = addDays(TODAY_ISO, -2);   // Day 3 of 27 (Menstrual)
+    const mayaLast = addDays(TODAY_ISO, -13);
+    const elenaLast = addDays(TODAY_ISO, -22);
+    const chloeLast = addDays(TODAY_ISO, -2);
 
     return {
       theme: state ? state.theme : 'light',
@@ -209,7 +219,7 @@
               symptoms: ['High Stamina', 'Clear Skin'],
               energy: 5,
               bbt: '97.38',
-              notes: 'Peak ovulatory energy, clear spinnbarkeit fluid, and strong creative focus.'
+              notes: 'Peak ovulatory energy, clear fertile fluid, and strong creative focus.'
             },
             [addDays(TODAY_ISO, -2)]: {
               flow: 'none',
@@ -334,7 +344,6 @@
     return p;
   }
 
-  // --- PHYSIOLOGICAL, INTIMACY & BEHAVIORAL ENGINE ---
   function sortPeriods(periods) {
     return (periods || []).slice().sort(function (a, b) {
       return a.start.localeCompare(b.start);
@@ -415,7 +424,6 @@
     const normPos = (day - 1) / Math.max(1, cLen - 1);
     const ovPos = (ovDay - 1) / Math.max(1, cLen - 1);
 
-    // Smooth endocrine curves (0-100)
     const estPeak1 = Math.exp(-Math.pow((normPos - (ovPos - 0.03)) / 0.11, 2)) * 88;
     const estPeak2 = Math.exp(-Math.pow((normPos - (ovPos + 0.25)) / 0.16, 2)) * 48;
     const estrogen = Math.round(Math.min(96, 12 + estPeak1 + estPeak2));
@@ -428,7 +436,6 @@
 
     const lhSurge = Math.round(8 + Math.exp(-Math.pow((day - ovDay) / 1.15, 2)) * 88);
 
-    // Expected Basal Body Temp curve (°F)
     const expectedBbt = day <= ovDay
       ? (97.32 - (day === ovDay ? 0.08 : 0) + Math.sin(day * 0.5) * 0.04)
       : (97.86 + Math.min(0.22, (day - ovDay) * 0.03) - (day >= cLen - 1 ? 0.25 : 0));
@@ -438,17 +445,17 @@
       return {
         phaseKey: 'menstrual',
         phaseName: 'Menstrual Phase',
-        subPhase: isEarly ? 'Early Menstruation • Hormone Baseline' : 'Late Menstruation • Early Renewal',
+        subPhase: isEarly ? 'Early Flow • Restorative Baseline' : 'Late Flow • Quiet Renewal',
         color: '#C25949',
         fertility: 'Low',
         conceptionBadge: 'Low Conception Probability',
-        shortCaption: isEarly ? 'E₂ & P₄ at baseline • Uterine shedding' : 'Pituitary FSH gently rising',
+        shortCaption: isEarly ? 'Hormones at baseline • Restorative focus' : 'Follicular recruitment beginning',
         headline: isEarly
           ? 'Inward somatic focus, quiet sensory threshold, and deep restorative pull.'
-          : 'Physical heaviness lifts as rising FSH initiates early cognitive clarity.',
+          : 'Physical heaviness lifts as rising FSH initiates early mental clarity.',
         physiology: isEarly
-          ? 'Estradiol and progesterone sit at their lowest baseline, triggering prostaglandin release and endometrial shedding. Parasympathetic rest and iron replenishment take priority.'
-          : 'Prostaglandin activity subsides by Day ' + day + '. Follicle-stimulating hormone (FSH) recruits new ovarian follicles, initiating an upward shift in mental clarity.',
+          ? 'Estradiol and progesterone rest at their lowest baseline, triggering uterine shedding. Iron replenishment, pelvic warmth, and unhurried rest take priority.'
+          : 'Prostaglandin cramping subsides by Day ' + day + '. The pituitary gently releases FSH to recruit new follicles, bringing a noticeable lift in clarity.',
         energy: isEarly ? 38 : 56,
         mood: isEarly ? 64 : 75,
         focus: isEarly ? 54 : 68,
@@ -460,28 +467,33 @@
         lh: lhSurge,
         expectedBbt: expectedBbt.toFixed(2),
         fluidLabel: 'Menstrual flow',
+        metabolicNote: 'Basal metabolism at follicular baseline • Focus on iron + Vitamin C',
         cues: [
           { icon: '🌡️', label: 'BBT Baseline (~97.3°F)' },
-          { icon: '🧠', label: 'High Left/Right Integration' },
-          { icon: '🤍', label: 'Comfort & Tactile Intimacy' },
-          { icon: '🍵', label: 'Iron + Magnesium Focus' }
+          { icon: '🤍', label: 'Comfort & Warm Touch' },
+          { icon: '🍵', label: 'Iron + Ginger Support' }
+        ],
+        rituals: [
+          { title: 'Nourishment', body: 'Pair heme or plant iron (lentils, dark leafy greens, grass-fed beef) with Vitamin C to replenish ferritin lost during flow. Warm ginger or red raspberry leaf tea eases prostaglandin cramping.' },
+          { title: 'Movement Pace', body: 'Honor your nervous system: gentle walking, restorative yin yoga, or somatic stretching without performance pressure.' },
+          { title: 'Evening Sanctuary', body: 'Core body temperature drops back to baseline—a warm bath or heating pad over the lower abdomen deepens slow-wave sleep.' }
         ],
         moodTitle: isEarly ? 'Reflective & Low-Stimulation' : 'Clearing Mental Fog',
         moodBody: isEarly
-          ? 'With estradiol at baseline, serotonin turnover is quieter. You may prefer candor, stillness, and trusted environments over performative social small talk.'
-          : 'As hormone withdrawal stabilizes, emotional reactivity levels out into a grounded sense of reset and clear pattern recognition.',
-        behaviorTitle: isEarly ? 'Protect Margin & Audit Priorities' : 'Gentle Structuring & Synthesis',
+          ? 'With estradiol at baseline, you may prefer candor, stillness, and trusted spaces over performative small talk.'
+          : 'As hormone withdrawal settles, emotional reactivity levels out into a grounded sense of reset.',
+        behaviorTitle: isEarly ? 'Protect Margin & Simplify' : 'Gentle Structuring',
         behaviorBody: isEarly
-          ? 'Avoid stacking high-stakes negotiations or dense social back-to-backs. Ideal window for auditing, editing, reading, and low-friction solo focus.'
-          : 'Organize upcoming sprints and ease back into structured problem-solving without forcing peak output.',
-        bodyTitle: isEarly ? 'Warmth, Pelvic Relief & Deep Sleep' : 'Zone-2 Mobility & Rebound',
+          ? 'Leave breathing room between commitments. Ideal days for solo reflection, reading, and low-friction tasks.'
+          : 'Ease back into organizing upcoming priorities without forcing marathon sessions.',
+        bodyTitle: isEarly ? 'Pelvic Relief & Deep Rest' : 'Rebounding Stamina',
         bodyBody: isEarly
-          ? 'Core body temperature drops back to follicular baseline (~97.3°F). Some experience heightened pelvic warmth or prostaglandin cramping; gentle orgasms or heat can relieve uterine tension.'
-          : 'Neuromuscular recovery accelerates now; light strength work, walking, or pilates feels noticeably smoother.',
+          ? 'Some women experience heightened pelvic congestion or relief from gentle orgasms, while others prefer complete physical stillness.'
+          : 'Neuromuscular recovery accelerates now; light strength or mobility work feels noticeably smoother.',
         partnerTitle: isEarly ? 'Quiet Presence Over Fixing' : 'Unhurried Momentum',
         partnerBody: isEarly
-          ? 'Practical gestures (handling dinner, reducing household noise, warm touch without expectation) land deeply.'
-          : 'Energy is rebounding; check in on comfort levels before scheduling busy group plans.'
+          ? 'Take dinner and household logistics off her plate without asking her to direct the plan. Warmth and zero pressure land best.'
+          : 'Energy is returning gently; check in on social battery before booking busy group plans.'
       };
     }
 
@@ -490,13 +502,13 @@
       return {
         phaseKey: 'follicular',
         phaseName: 'Follicular Phase',
-        subPhase: isLateFollicular ? 'Late Follicular • Steep Estradiol Climb' : 'Mid Follicular • Follicular Maturation',
+        subPhase: isLateFollicular ? 'Late Follicular • Steep Estradiol Climb' : 'Mid Follicular • Rising Vitality',
         color: '#3E7A6E',
         fertility: isLateFollicular ? 'High (Opening)' : 'Low–Moderate',
         conceptionBadge: isLateFollicular ? 'Fertile Window Opening (Sperm Viable)' : 'Low–Moderate Fertility',
         shortCaption: 'Climbing estradiol & high dopamine sensitivity',
         headline: 'Rising curiosity, fast cognitive execution, and building spontaneous desire.',
-        physiology: 'Maturing follicles secrete climbing 17β-estradiol while progesterone remains quiet. Estradiol enhances hippocampal synaptic plasticity and amplifies dopamine and serotonin receptor sensitivity.',
+        physiology: 'Maturing follicles secrete climbing 17β-estradiol while progesterone stays quiet. Estradiol boosts synaptic plasticity and amplifies dopamine and serotonin receptor sensitivity.',
         energy: isLateFollicular ? 86 : 78,
         mood: 84,
         focus: 88,
@@ -508,20 +520,25 @@
         lh: lhSurge,
         expectedBbt: expectedBbt.toFixed(2),
         fluidLabel: isLateFollicular ? 'Creamy → Watery' : 'Sticky → Creamy',
+        metabolicNote: 'High insulin sensitivity & optimal glycogen use',
         cues: [
-          { icon: '⚡', label: 'Peak Glycogen & Strength' },
-          { icon: '🧬', label: 'Estradiol + Dopamine Rise' },
+          { icon: '⚡', label: 'Peak Strength Adaptation' },
           { icon: '💧', label: isLateFollicular ? 'Fertile Fluid Developing' : 'Early Cervical Fluid' },
-          { icon: '🎯', label: 'Deep Analytical Sprints' }
+          { icon: '🎯', label: 'Creative & Strategic Flow' }
+        ],
+        rituals: [
+          { title: 'Nourishment', body: 'Fresh, vibrant proteins, fermented foods (kimchi, kefir), and flax or pumpkin seeds support healthy estrogen metabolism as estradiol climbs.' },
+          { title: 'Movement Pace', body: 'Estrogen protects muscle tissue and boosts glucose uptake—your body responds beautifully to progressive strength training and high-output cardio.' },
+          { title: 'Evening Sanctuary', body: 'Mental energy runs high into the evening; a 20-minute wind-down away from screens helps channel creative momentum into restful sleep.' }
         ],
         moodTitle: 'Optimistic, Resilient & Curious',
-        moodBody: 'Rising estradiol acts as a natural mood elevator and buffers the amygdala’s stress response. Frustrations roll off more easily and intrinsic drive climbs.',
-        behaviorTitle: 'Complex Problem-Solving & New Initiatives',
-        behaviorBody: 'Working memory, associative learning, and creative ideation thrive during the follicular climb. Schedule demanding deep-work sprints and strategic decisions here.',
-        bodyTitle: 'Spontaneous Libido Climb & High Stamina',
-        bodyBody: 'Natural lubrication and spontaneous sexual interest build alongside estradiol. High insulin sensitivity supports heavy resistance training and fast recovery.',
-        partnerTitle: 'Novelty, Play & Shared Exploration',
-        partnerBody: 'Appetite for new experiences, spontaneous date nights, and tackling ambitious collaborative projects is naturally elevated.'
+        moodBody: 'Rising estradiol acts as a natural mood elevator and buffers stress reactivity. Frustrations roll off more easily and intrinsic drive climbs.',
+        behaviorTitle: 'Complex Problem-Solving & New Projects',
+        behaviorBody: 'Working memory, learning speed, and creative ideation thrive during the follicular climb. Anchor demanding deep-work sprints here.',
+        bodyTitle: 'Spontaneous Desire Climb & Fast Recovery',
+        bodyBody: 'Natural lubrication and spontaneous interest build alongside estradiol, while high insulin sensitivity fuels physical stamina.',
+        partnerTitle: 'Novelty, Play & Shared Adventure',
+        partnerBody: 'Appetite for new experiences, spontaneous date nights, and tackling ambitious plans together is naturally high.'
       };
     }
 
@@ -534,11 +551,11 @@
         color: '#C4862D',
         fertility: isPeakOv ? 'Peak' : 'High',
         conceptionBadge: isPeakOv ? 'Peak Fertility (Ovulation Day)' : 'High Conception Probability',
-        shortCaption: isPeakOv ? 'LH surge, androgen pulse & egg release' : 'Peak estradiol & spinnbarkeit fluid',
+        shortCaption: isPeakOv ? 'LH surge, androgen pulse & egg release' : 'Peak estradiol & fertile fluid',
         headline: 'Peak verbal fluency, spontaneous desire, and outward social magnetism.',
         physiology: isPeakOv
-          ? 'Estradiol reaches its cycle zenith and triggers a sharp luteinizing hormone (LH) surge, releasing the dominant egg within 12–36 hours. A concurrent pulse of ovarian testosterone elevates spontaneous libido and motor drive.'
-          : 'High circulating estradiol maximizes left-hemisphere verbal processing, reward-pathway responsiveness, and fertile "egg-white" cervical fluid.',
+          ? 'Estradiol reaches its cycle zenith and triggers a sharp luteinizing hormone (LH) surge, releasing the dominant egg within 12–36 hours alongside a brief pulse of ovarian testosterone.'
+          : 'High circulating estradiol maximizes verbal articulation, reward-pathway responsiveness, and clear, stretchy "egg-white" cervical fluid.',
         energy: 92,
         mood: 88,
         focus: 90,
@@ -550,20 +567,25 @@
         lh: lhSurge,
         expectedBbt: expectedBbt.toFixed(2),
         fluidLabel: 'Egg-White (Peak Fertile)',
+        metabolicNote: 'Peak estradiol • Support liver clearance & hydration',
         cues: [
-          { icon: '🔥', label: 'Peak Spontaneous Libido' },
-          { icon: '✨', label: 'Egg-White Cervical Fluid' },
-          { icon: '🗣️', label: 'Peak Verbal Articulation' },
-          { icon: '📈', label: 'LH Surge Window' }
+          { icon: '🔥', label: 'Peak Spontaneous Desire' },
+          { icon: '✨', label: 'Egg-White Fertile Fluid' },
+          { icon: '🗣️', label: 'Peak Verbal Articulation' }
+        ],
+        rituals: [
+          { title: 'Nourishment', body: 'Cruciferous vegetables (broccoli sprouts, arugula, kale), berries, and mineral-rich hydration help the liver metabolize peak estradiol smoothly.' },
+          { title: 'Movement Pace', body: 'Peak power output and social energy—great for group classes or PRs, with mindful warm-ups since peak estrogen slightly increases ligament laxity.' },
+          { title: 'Evening Sanctuary', body: 'Libido and sensory warmth peak during this window; prioritize intentional connection, romance, or expressive creative outlets.' }
         ],
         moodTitle: 'Confident, Expressive & Magnetic',
-        moodBody: 'Peak estradiol and a mid-cycle androgen rise promote social confidence, emotional warmth, and sensory responsiveness. Note: a brief 24h sensitivity dip right after egg release is normal.',
-        behaviorTitle: 'Pitches, Negotiations & High-Visibility Work',
-        behaviorBody: 'Verbal articulation and social attunement are at their cycle high. Ideal days for keynotes, difficult conversations, interviews, hosting, and leadership.',
-        bodyTitle: 'Peak Libido, Fertile Mucus & Ligament Care',
-        bodyBody: 'Spontaneous desire and natural lubrication peak here. Maximal strength is high, though peak estrogen slightly increases ligament laxity—keep warm-ups crisp.',
-        partnerTitle: 'High Connection, Romance & Direct Dialogue',
-        partnerBody: 'Prime window for intentional intimacy, active date nights, and constructive conversations.'
+        moodBody: 'Peak estradiol and a mid-cycle androgen rise promote social confidence, warmth, and sensory responsiveness.',
+        behaviorTitle: 'Conversations, Pitches & Leadership',
+        behaviorBody: 'Verbal articulation and empathy are at their cycle high. Ideal days for important conversations, presentations, and hosting.',
+        bodyTitle: 'Peak Libido, Fertile Fluid & Vitality',
+        bodyBody: 'Spontaneous desire and natural lubrication reach their peak. Notice whether you feel mild one-sided ovulatory twinges (mittelschmerz).',
+        partnerTitle: 'High Connection & Intentional Intimacy',
+        partnerBody: 'Prime window for date nights, romantic attention, and open, heart-to-heart dialogue.'
       };
     }
 
@@ -572,51 +594,56 @@
     return {
       phaseKey: 'luteal',
       phaseName: 'Luteal Phase',
-      subPhase: isLateLuteal ? 'Late Luteal • Neurosteroid Withdrawal' : 'Early–Mid Luteal • Progesterone Dominance',
+      subPhase: isLateLuteal ? 'Late Luteal • Pre-Flow Transition' : 'Early–Mid Luteal • Progesterone Calm',
       color: '#7C5879',
       fertility: 'Low',
       conceptionBadge: 'Post-Ovulatory • Low Fertility',
-      shortCaption: isLateLuteal ? 'E₂ & allopregnanolone declining' : 'Progesterone peak & +0.5°F BBT shift',
+      shortCaption: isLateLuteal ? 'Hormones declining • Protect quiet margin' : 'Progesterone peak & +0.5°F thermal shift',
       headline: isLateLuteal
-        ? 'Heightened sensory discernment, lower stress buffer, and a strong pull toward completion.'
+        ? 'Heightened discernment, lower sensory buffer, and a natural pull toward completion.'
         : 'Settled GABAergic calm paired with methodical focus and responsive intimacy.',
       physiology: isLateLuteal
-        ? 'As the corpus luteum regresses, progesterone and estradiol fall rapidly. The steep drop in allopregnanolone (a calming GABA-A neurosteroid) temporarily increases amygdala reactivity and lowers sensory thresholds.'
-        : 'The corpus luteum secretes high progesterone alongside a secondary estradiol plateau. Progesterone raises waking basal body temperature by +0.4°F–0.8°F and boosts resting metabolic burn by 5–10%.',
-      energy: isLateLuteal ? 46 : 68,
-      mood: isLateLuteal ? 52 : 78,
-      focus: isLateLuteal ? 60 : 78,
-      desire: isLateLuteal ? 42 : 58,
-      social: isLateLuteal ? 40 : 62,
-      recovery: isLateLuteal ? 84 : 62,
-      estrogen: estrogen,
-      progesterone: progesterone,
-      lh: lhSurge,
-      expectedBbt: expectedBbt.toFixed(2),
-      fluidLabel: 'Dry / Sticky (Non-fertile)',
-      cues: [
-        { icon: '🌡️', label: 'BBT Elevated (+0.5°F)' },
-        { icon: '🛡️', label: isLateLuteal ? 'GABA-A Withdrawal Care' : 'Allopregnanolone Calm' },
-        { icon: '🕯️', label: 'Responsive / Sensual Desire' },
-        { icon: '🥑', label: '+150–250 kcal Metabolic Need' }
-      ],
-      moodTitle: isLateLuteal ? 'High Discernment & Sensory Sensitivity' : 'Settled via GABA-A Soothing',
-      moodBody: isLateLuteal
-        ? 'Rapid withdrawal of allopregnanolone reduces GABA receptor soothing, which can surface irritability, tearfulness, or anxiety if overstimulated or sleep-deprived.'
-        : 'Mid-luteal progesterone converts into allopregnanolone, binding to GABA-A receptors to promote a grounded, nesting, and observant temperament.',
-      behaviorTitle: isLateLuteal ? 'Boundary Protection & Closing Loops' : 'Deep Execution & Quality Control',
-      behaviorBody: isLateLuteal
-        ? 'Your brain is acutely tuned to unfinished friction points. Channel this into closing open loops, simplifying commitments, and declining non-essential noise.'
-        : 'Shift from launching brand-new initiatives to deep execution, editing, documentation, and systematic follow-through.',
-      bodyTitle: isLateLuteal ? 'Magnesium, Complex Carbs & Nervous System Care' : 'Responsive Desire & Higher Caloric Burn',
-      bodyBody: isLateLuteal
-        ? 'Progesterone withdrawal can fragment REM sleep and cause fluid retention. Complex carbohydrates, magnesium glycinate, and lower-cortisol movement buffer reactivity.'
-        : 'Desire shifts from spontaneous to responsive—thriving on emotional safety, massage, and unhurried foreplay. Resting metabolic rate is elevated by ~150–250 kcal/day.',
-      partnerTitle: isLateLuteal ? 'Validation, Margin & Zero Defensiveness' : 'Cozy Routines & Affectionate Safety',
-      partnerBody: isLateLuteal
-        ? 'Sensory overload and decision fatigue happen faster in the final 4 days before bleeding. Offer proactive logistical support, warm food, and unpressured space.'
-        : 'Prefers meaningful one-on-one connection, non-demanding sensual touch, and predictable routines over chaotic late nights.'
-    };
+        ? 'As the corpus luteum winds down, progesterone and estradiol drop rapidly. The steep decline in calming allopregnanolone temporarily heightens nervous system sensitivity.'
+        : 'High progesterone converts into allopregnanolone (soothing GABA-A receptors), raises waking temperature by +0.4°F–0.8°F, and increases basal caloric burn by 5–10%.',
+        energy: isLateLuteal ? 46 : 68,
+        mood: isLateLuteal ? 52 : 78,
+        focus: isLateLuteal ? 60 : 78,
+        desire: isLateLuteal ? 42 : 58,
+        social: isLateLuteal ? 40 : 62,
+        recovery: isLateLuteal ? 84 : 62,
+        estrogen: estrogen,
+        progesterone: progesterone,
+        lh: lhSurge,
+        expectedBbt: expectedBbt.toFixed(2),
+        fluidLabel: 'Dry / Sticky (Non-fertile)',
+        metabolicNote: 'Resting burn +150–250 kcal/day • Honor complex carb cravings',
+        cues: [
+          { icon: '🌡️', label: 'BBT Elevated (+0.5°F)' },
+          { icon: '🕯️', label: 'Responsive / Sensual Desire' },
+          { icon: '🥑', label: '+150–250 kcal Metabolic Rise' }
+        ],
+        rituals: [
+          { title: 'Nourishment', body: 'Your metabolism burns 150–250 extra calories daily. Complex carbohydrates (roasted sweet potato, oats), B6, and dark chocolate stabilize serotonin and prevent cortisol spikes.' },
+          { title: 'Movement Pace', body: 'Progesterone raises core temperature and resting heart rate—favor steady strength training, pilates, or incline walks over breathless HIIT.' },
+          { title: 'Evening Sanctuary', body: 'Magnesium glycinate before bed and a slightly cooler bedroom counter progesterone’s thermal rise and protect deep REM sleep.' }
+        ],
+        moodTitle: isLateLuteal ? 'High Discernment & Sensory Honesty' : 'Grounded via GABA-A Calm',
+        moodBody: isLateLuteal
+          ? 'Rapid withdrawal of allopregnanolone lowers your buffer for noise, clutter, and sleep debt—making boundaries essential.'
+          : 'Mid-luteal progesterone promotes a settled, observant, and homeward-leaning temperament.',
+        behaviorTitle: isLateLuteal ? 'Closing Loops & Saying No' : 'Deep Execution & Refining',
+        behaviorBody: isLateLuteal
+          ? 'Your mind quickly spots what isn’t working. Channel this clarity into finishing open tasks and declining non-essential obligations.'
+          : 'Shift from launching new commitments to editing, organizing, and steady follow-through.',
+        bodyTitle: isLateLuteal ? 'Nervous System Soothing & Minerals' : 'Responsive Desire & Steady Warmth',
+        bodyBody: isLateLuteal
+          ? 'Reducing caffeine and alcohol in the final 4 days dramatically eases breast tenderness, sleep fragmentation, and mood dips.'
+          : 'Desire shifts from spontaneous to responsive—blooming when preceded by emotional safety, massage, and unhurried closeness.',
+        partnerTitle: isLateLuteal ? 'Validation, Margin & Zero Defensiveness' : 'Cozy Routines & Affectionate Safety',
+        partnerBody: isLateLuteal
+          ? 'Decision fatigue hits faster right before flow. Offer proactive practical help, warm nourishing food, and unpressured space.'
+          : 'Prefers meaningful one-on-one time, affectionate touch without agenda, and calm evenings.'
+      };
   }
 
   function recalculateProfileCycleStats(profile) {
@@ -634,7 +661,6 @@
     }
   }
 
-  // --- THEME & PHASE AMBIENT ENGINE ---
   function applyTheme(phaseKey) {
     const htmlEl = document.documentElement;
     const sun = document.getElementById('icon-sun');
@@ -655,25 +681,19 @@
     }
   }
 
-  // --- SVG BOTANICAL MORPHING GLYPHS ---
   function getBotanicalPhaseSVG(phaseKey, color) {
     if (phaseKey === 'menstrual') {
-      // Grounded seed / droplet within protective calyx
       return '<svg viewBox="0 0 48 48" class="w-full h-full"><circle cx="24" cy="24" r="19" fill="none" stroke="' + color + '" stroke-width="1.2" stroke-dasharray="2 3" opacity="0.55"/><path d="M24 10 C30 20, 33 27, 24 38 C15 27, 18 20, 24 10 Z" fill="' + color + '" fill-opacity="0.22" stroke="' + color + '" stroke-width="1.75"/><circle cx="24" cy="27" r="3" fill="' + color + '"/></svg>';
     }
     if (phaseKey === 'follicular') {
-      // Unfurling twin botanical shoots
       return '<svg viewBox="0 0 48 48" class="w-full h-full"><circle cx="24" cy="24" r="19" fill="none" stroke="' + color + '" stroke-width="1.2" opacity="0.35"/><path d="M24 38 L24 14 M24 28 C15 26, 13 17, 21 14 C23 20, 24 24, 24 28 Z M24 24 C33 22, 35 13, 27 10 C25 16, 24 20, 24 24 Z" fill="' + color + '" fill-opacity="0.22" stroke="' + color + '" stroke-width="1.75" stroke-linecap="round"/></svg>';
     }
     if (phaseKey === 'ovulatory') {
-      // Radiant 8-petal full bloom
       return '<svg viewBox="0 0 48 48" class="w-full h-full"><circle cx="24" cy="24" r="20" fill="' + color + '" fill-opacity="0.14"/><g stroke="' + color + '" stroke-width="1.6" fill="' + color + '" fill-opacity="0.22"><ellipse cx="24" cy="24" rx="5.5" ry="16"/><ellipse cx="24" cy="24" rx="16" ry="5.5"/><ellipse cx="24" cy="24" rx="5.5" ry="16" transform="rotate(45 24 24)"/><ellipse cx="24" cy="24" rx="5.5" ry="16" transform="rotate(-45 24 24)"/></g><circle cx="24" cy="24" r="4" fill="' + color + '"/></svg>';
     }
-    // Luteal: Waning crescent & grounded botanical arc
     return '<svg viewBox="0 0 48 48" class="w-full h-full"><circle cx="24" cy="24" r="19" fill="none" stroke="' + color + '" stroke-width="1.2" opacity="0.4"/><path d="M27 11 A14 14 0 1 0 27 37 A11 11 0 1 1 27 11 Z" fill="' + color + '" fill-opacity="0.28" stroke="' + color + '" stroke-width="1.75"/><circle cx="19" cy="24" r="2.2" fill="' + color + '"/></svg>';
   }
 
-  // --- 6-AXIS BIOMETRIC PETAL ROSE SVG ---
   function renderPetalRoseSVG(insight) {
     const svg = document.getElementById('petal-rose-svg');
     if (!svg) return;
@@ -681,16 +701,15 @@
     const cy = 96;
     const maxR = 62;
     const axes = [
-      { label: 'Energy', val: insight.energy, angle: -90 },
-      { label: 'Focus', val: insight.focus, angle: -30 },
+      { label: 'Vitality', val: insight.energy, angle: -90 },
+      { label: 'Clarity', val: insight.focus, angle: -30 },
       { label: 'Desire', val: insight.desire, angle: 30 },
       { label: 'Social', val: insight.social, angle: 90 },
-      { label: 'Rest Need', val: insight.recovery, angle: 150 },
+      { label: 'Stillness', val: insight.recovery, angle: 150 },
       { label: 'Calm', val: insight.mood, angle: 210 }
     ];
 
     let out = '';
-    // Concentric guide rings
     [0.33, 0.66, 1.0].forEach(function (step) {
       out += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (maxR * step).toFixed(1) + '" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 2"/>';
     });
@@ -707,13 +726,11 @@
       const py = cy + rVal * Math.sin(rad);
       pts.push(px.toFixed(1) + ',' + py.toFixed(1));
 
-      // Label placement
       const lx = cx + (maxR + 19) * Math.cos(rad);
       const ly = cy + (maxR + 14) * Math.sin(rad);
       out += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 3).toFixed(1) + '" text-anchor="middle" font-size="8.5" font-family="JetBrains Mono" fill="var(--sub)">' + ax.label + '</text>';
     });
 
-    // Polygon & vertices
     out += '<polygon points="' + pts.join(' ') + '" fill="' + insight.color + '" fill-opacity="0.24" stroke="' + insight.color + '" stroke-width="2"/>';
     pts.forEach(function (pt) {
       const sp = pt.split(',');
@@ -723,7 +740,6 @@
     svg.innerHTML = out;
   }
 
-  // --- HEADER & SWITCHER RENDERER ---
   function renderHeaderAndSwitcher() {
     const bar = document.getElementById('profile-switcher-bar');
     const active = getActiveProfile();
@@ -734,10 +750,10 @@
       const status = getCycleStatusForDate(p, TODAY_ISO);
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'tactile-btn px-3 py-1.5 rounded-full text-xs flex items-center gap-2 transition shrink-0 border ' +
+      btn.className = 'tactile-btn px-3 py-1.5 rounded-full text-xs flex items-center gap-2 shrink-0 border ' +
         (isSelected
-          ? 'surface-card border-[#1C1917] dark:border-[#F4EFEA] font-medium text-ink shadow-2xs'
-          : 'border-transparent surface-muted text-sub hover:text-ink');
+          ? 'surface-card font-medium text-ink'
+          : 'border-transparent surface-muted text-sub');
       btn.innerHTML =
         '<span class="w-2 h-2 rounded-full shrink-0" style="background-color:' + p.color + '"></span>' +
         '<span>' + escapeHtml(p.name) + '</span>' +
@@ -753,7 +769,7 @@
 
     const addBtn = document.createElement('button');
     addBtn.type = 'button';
-    addBtn.className = 'tactile-btn px-2.5 py-1.5 rounded-full text-xs font-mono text-sub hover:text-ink border border-dashed border-subtle shrink-0 transition';
+    addBtn.className = 'tactile-btn px-2.5 py-1.5 rounded-full text-xs font-mono text-sub border border-dashed border-subtle shrink-0';
     addBtn.textContent = '+ Person';
     addBtn.addEventListener('click', function () {
       openProfileModal(null);
@@ -766,10 +782,16 @@
     document.querySelectorAll('.nav-tab').forEach(function (tab) {
       const v = tab.getAttribute('data-view');
       if (v === state.activeView) {
-        tab.className = 'nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap transition bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
+        tab.className = 'nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
       } else {
-        tab.className = 'nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap transition text-sub hover:text-ink';
+        tab.className = 'nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap text-sub';
       }
+    });
+
+    document.querySelectorAll('.dock-btn').forEach(function (btn) {
+      const v = btn.getAttribute('data-dock-view');
+      if (v === state.activeView) btn.classList.add('active');
+      else btn.classList.remove('active');
     });
   }
 
@@ -801,7 +823,6 @@
     document.getElementById('metric-fertility').textContent = phase.fertility;
   }
 
-  // --- VIEW 1: CYCLE DIAL, PETAL ROSE, VISUAL CUES & ENDOCRINE STUDIO ---
   function renderCycleView() {
     const p = getActiveProfile();
     if (!p) return;
@@ -816,7 +837,6 @@
     const isToday = inspectedDay === todayStatus.cycleDay;
     const insight = getDayInsight(p, inspectedDay);
 
-    // Apply phase-reactive ambient theme based on inspected day!
     applyTheme(insight.phaseKey);
 
     const resetBtn = document.getElementById('btn-reset-today');
@@ -849,33 +869,33 @@
     pill.style.color = insight.color;
     document.getElementById('dial-sub-caption').textContent = insight.shortCaption;
 
-    // Central Morphing Botanical Glyph
     document.getElementById('dial-botanical-glyph').innerHTML = getBotanicalPhaseSVG(insight.phaseKey, insight.color);
 
-    // Draw Sculptural SVG Cycle Ring
     renderCycleRingSVG(p, cLen, todayStatus.cycleDay, inspectedDay, todayStatus.latestStart);
 
-    // Right Column Insights
     document.getElementById('insight-phase-dot').style.backgroundColor = insight.color;
     document.getElementById('insight-phase-title').textContent = insight.subPhase;
     document.getElementById('insight-conception-badge').textContent = insight.conceptionBadge;
     document.getElementById('insight-headline').textContent = insight.headline;
     document.getElementById('insight-physiology').textContent = insight.physiology;
 
-    // Visual Cue Strip
     const cueStrip = document.getElementById('visual-cue-strip');
     cueStrip.innerHTML = (insight.cues || []).map(function (c) {
       return '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full surface-muted text-[11px] font-medium text-ink">' +
         '<span>' + c.icon + '</span><span>' + escapeHtml(c.label) + '</span></span>';
     }).join('');
 
-    // Render 6-Axis Petal Rose
     renderPetalRoseSVG(insight);
 
     setBar('energy', insight.energy);
     setBar('mood', insight.mood);
     setBar('focus', insight.focus);
     setBar('recovery', insight.recovery);
+
+    // Populate custom SVG micro-glyphs on the 3 domain cards
+    document.getElementById('glyph-neuro').innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3a6 6 0 0 0-6 6c0 4 6 12 6 12s6-8 6-12a6 6 0 0 0-6-6z"/><circle cx="12" cy="9" r="2"/></svg>';
+    document.getElementById('glyph-cognition').innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+    document.getElementById('glyph-body').innerHTML = '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
 
     document.getElementById('card-mood-title').textContent = insight.moodTitle;
     document.getElementById('card-mood-body').textContent = insight.moodBody;
@@ -885,7 +905,19 @@
     document.getElementById('card-body-body').textContent = insight.bodyBody;
     document.getElementById('card-partner-title').textContent = insight.partnerTitle;
     document.getElementById('card-partner-body').textContent = insight.partnerBody;
-    document.getElementById('partner-badge').textContent = p.relation === 'Self' ? 'For Partner / Peers' : 'Supporting ' + p.name;
+    document.getElementById('partner-badge').textContent = p.relation === 'Self' ? 'To Share With Partner' : 'Supporting ' + p.name;
+
+    // Populate Daily Nourishment, Movement & Evening Rituals
+    document.getElementById('ritual-metabolic-badge').textContent = insight.metabolicNote;
+    const ritualsEl = document.getElementById('daily-rituals-strip');
+    ritualsEl.innerHTML = (insight.rituals || []).map(function (r) {
+      return (
+        '<div class="surface-muted rounded-2xl p-4 space-y-1.5">' +
+          '<div class="font-serif text-lg text-ink">' + escapeHtml(r.title) + '</div>' +
+          '<p class="text-xs text-sub leading-relaxed">' + escapeHtml(r.body) + '</p>' +
+        '</div>'
+      );
+    }).join('');
 
     renderHormoneOrBbtChartSVG(p, cLen, inspectedDay, insight, todayStatus.latestStart);
     renderUpcomingMilestones(p, todayStatus);
@@ -900,14 +932,13 @@
     const svg = document.getElementById('cycle-ring-svg');
     const cx = 140;
     const cy = 140;
-    const r = 112;
+    const r = 118;
     const gapAngle = 1.65;
     const sliceAngle = 360 / cLen;
     const bounds = getPhaseBounds(profile);
 
     let html = '';
-    // Outer & inner architectural rings
-    html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r - 18) + '" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3" />';
+    html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r - 15) + '" fill="none" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3" />';
     html += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 16) + '" fill="none" stroke="var(--border)" stroke-width="0.75" opacity="0.5" />';
 
     for (let d = 1; d <= cLen; d++) {
@@ -927,23 +958,20 @@
 
       const midRad = (((d - 0.5) * sliceAngle - 90) * Math.PI) / 180;
 
-      // Ovulation starburst ring marker
       if (d === bounds.ovulationDay) {
         const ox = cx + (r - 18) * Math.cos(midRad);
         const oy = cy + (r - 18) * Math.sin(midRad);
         html += '<circle cx="' + ox.toFixed(1) + '" cy="' + oy.toFixed(1) + '" r="3.5" fill="#C4862D" stroke="var(--card)" stroke-width="1.2"/>';
       }
 
-      // Check if this cycle day has logged intimacy
       const dateForDay = addDays(latestStartISO, d - 1);
       const dayLog = profile.logs && profile.logs[dateForDay];
       if (dayLog && ((dayLog.sexActivities && dayLog.sexActivities.length > 0) || (dayLog.libido && dayLog.libido >= 4))) {
         const ix = cx + (r + 16) * Math.cos(midRad);
         const iy = cy + (r + 16) * Math.sin(midRad);
-        html += '<circle cx="' + ix.toFixed(1) + '" cy="' + iy.toFixed(1) + '" r="3.2" fill="#C95B78"><title>Intimacy / High Desire logged on ' + formatShortDate(dateForDay) + '</title></circle>';
+        html += '<circle cx="' + ix.toFixed(1) + '" cy="' + iy.toFixed(1) + '" r="3.2" fill="#C95B78"><title>Intimacy logged on ' + formatShortDate(dateForDay) + '</title></circle>';
       }
 
-      // Today outer halo marker
       if (isToday) {
         const mx = cx + (r + 16) * Math.cos(midRad);
         const my = cy + (r + 16) * Math.sin(midRad);
@@ -1010,11 +1038,10 @@
       out += '<circle cx="' + selX.toFixed(1) + '" cy="' + (padY + usableH - (insight.progesterone / 100) * usableH).toFixed(1) + '" r="4.5" fill="#7C5879" />';
 
       document.getElementById('hormone-day-note').textContent =
-        'Day ' + inspectedDay + ' Index — Estradiol (E₂): ' + insight.estrogen +
-        '% • Progesterone (P₄): ' + insight.progesterone +
+        'Day ' + inspectedDay + ' — Estradiol: ' + insight.estrogen +
+        '% • Progesterone: ' + insight.progesterone +
         '% • LH: ' + insight.lh + '%';
     } else {
-      // BBT Biphasic Thermal Curve + Logged BBT Points
       const bbtPts = [];
       const loggedDots = [];
       const minTemp = 97.0;
@@ -1036,10 +1063,9 @@
         }
       }
 
-      // Coverline at 97.55°F
       const coverY = padY + usableH - ((97.55 - minTemp) / (maxTemp - minTemp)) * usableH;
       out += '<line x1="' + padX + '" y1="' + coverY.toFixed(1) + '" x2="' + (w - padX) + '" y2="' + coverY.toFixed(1) + '" stroke="#C25949" stroke-width="1" stroke-dasharray="4 4" opacity="0.65"/>';
-      out += '<text x="' + (padX + 6) + '" y="' + (coverY - 5).toFixed(1) + '" font-size="9" font-family="JetBrains Mono" fill="#C25949">Thermal Coverline (~97.55°F)</text>';
+      out += '<text x="' + (padX + 6) + '" y="' + (coverY - 5).toFixed(1) + '" font-size="9" font-family="JetBrains Mono" fill="#C25949">Thermal Shift Line (~97.55°F)</text>';
 
       out += '<polyline fill="none" stroke="#C4862D" stroke-width="2.4" points="' + bbtPts.join(' ') + '" />';
       loggedDots.forEach(function (pt) {
@@ -1049,7 +1075,7 @@
       out += '<line x1="' + selX.toFixed(1) + '" y1="4" x2="' + selX.toFixed(1) + '" y2="' + (h - 6) + '" stroke="var(--ink)" stroke-width="1.5" />';
 
       document.getElementById('hormone-day-note').textContent =
-        'Day ' + inspectedDay + ' Symptothermal — Expected BBT: ~' + insight.expectedBbt + '°F • Cervical Fluid: ' + insight.fluidLabel;
+        'Day ' + inspectedDay + ' — Expected Waking BBT: ~' + insight.expectedBbt + '°F • Fluid: ' + insight.fluidLabel;
     }
 
     out += '<text x="' + padX + '" y="180" fill="var(--faint)" font-size="10" font-family="JetBrains Mono">Day 1</text>';
@@ -1085,13 +1111,13 @@
         color: '#C25949'
       },
       {
-        label: 'Fertile & Peak Libido Window',
-        dates: formatShortDate(fertileStartISO) + ' – ' + formatShortDate(fertileEndISO) + ' (Ovulation ' + formatShortDate(nextOvulationISO) + ')',
+        label: 'Fertile & Peak Desire Window',
+        dates: formatShortDate(fertileStartISO) + ' – ' + formatShortDate(fertileEndISO) + ' (Peak ' + formatShortDate(nextOvulationISO) + ')',
         delta: formatDeltaDays(diffDays(nextOvulationISO, TODAY_ISO)),
         color: '#C4862D'
       },
       {
-        label: 'Luteal Neurosteroid Shift',
+        label: 'Luteal Calm & Nesting Shift',
         dates: 'Starts ' + formatShortDate(nextLutealISO),
         delta: formatDeltaDays(diffDays(nextLutealISO, TODAY_ISO)),
         color: '#7C5879'
@@ -1125,7 +1151,6 @@
     return Math.abs(d) + 'd ago';
   }
 
-  // --- VIEW 2: CALENDAR & 3-CYCLE FORECAST ---
   function renderCalendarView() {
     const p = getActiveProfile();
     if (!p) return;
@@ -1146,7 +1171,7 @@
 
     for (let i = 0; i < firstDayOfWeek; i++) {
       const empty = document.createElement('div');
-      empty.className = 'h-14 sm:h-16 rounded-2xl opacity-20';
+      empty.className = 'h-14 sm:h-16 rounded-2xl';
       grid.appendChild(empty);
     }
 
@@ -1168,7 +1193,7 @@
 
       const btn = document.createElement('button');
       btn.type = 'button';
-      let bgClass = 'surface-muted hover:opacity-90 text-ink';
+      let bgClass = 'surface-muted text-ink';
       if (isLoggedPeriod) {
         bgClass = 'bg-[#C25949] text-white';
       } else if (isPredictedPeriod) {
@@ -1177,8 +1202,8 @@
         bgClass = 'border border-[#C4862D]/60 bg-[#C4862D]/15 text-ink';
       }
 
-      const ringClass = isSelected ? 'ring-2 ring-[#1C1917] dark:ring-[#F4EFEA]' : '';
-      btn.className = 'tactile-btn h-14 sm:h-16 rounded-2xl p-1.5 flex flex-col justify-between items-start transition relative ' + bgClass + ' ' + ringClass;
+      const ringClass = isSelected ? 'ring-2' : '';
+      btn.className = 'tactile-btn h-14 sm:h-16 rounded-2xl p-1.5 flex flex-col justify-between items-start relative ' + bgClass + ' ' + ringClass;
 
       btn.innerHTML =
         '<div class="w-full flex items-center justify-between text-xs font-mono">' +
@@ -1189,7 +1214,7 @@
           (isOvulation ? '<span class="text-[9px] font-mono uppercase px-1 rounded bg-[#C4862D] text-white">OV</span>' : '<span></span>') +
           '<div class="flex items-center gap-1">' +
             (hasSex ? '<span class="w-2 h-2 rounded-full bg-[#C95B78]" title="Intimacy logged"></span>' : '') +
-            (hasLog ? '<span class="w-1.5 h-1.5 rounded-full ' + (isLoggedPeriod ? 'bg-white' : 'bg-ink') + '"></span>' : '') +
+            (hasLog ? '<span class="w-1.5 h-1.5 rounded-full ' + (isLoggedPeriod ? 'bg-white' : 'bg-phase') + '"></span>' : '') +
           '</div>' +
         '</div>';
 
@@ -1235,7 +1260,7 @@
       if (log.libido) pills.push('Desire: ' + log.libido + '/5');
       if (log.cervicalFluid && log.cervicalFluid !== 'none') pills.push('Fluid: ' + log.cervicalFluid);
       if (log.opk && log.opk !== 'none') pills.push('LH Strip: ' + log.opk.toUpperCase());
-      if (log.energy) pills.push('Energy: ' + log.energy + '/5');
+      if (log.energy) pills.push('Vitality: ' + log.energy + '/5');
       if (log.bbt) pills.push('BBT: ' + log.bbt + '°F');
       (log.sexActivities || []).forEach(function (sa) {
         const found = SEX_ACTIVITIES.find(function (x) { return x.id === sa; });
@@ -1281,7 +1306,6 @@
     document.getElementById('three-cycle-forecast').innerHTML = rows.join('');
   }
 
-  // --- VIEW 3: DAILY CHECK-IN (INCLUDING SEX TRACKING & BIOMARKERS) ---
   let draftCheckin = {
     flow: 'none',
     sexActivities: [],
@@ -1333,27 +1357,25 @@
   }
 
   function renderCheckinControls() {
-    // Flow buttons
     document.querySelectorAll('.flow-btn').forEach(function (btn) {
       const val = btn.getAttribute('data-flow');
       if (val === draftCheckin.flow) {
-        btn.className = 'flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-[#C25949] bg-[#C25949] text-white text-xs font-medium transition';
+        btn.className = 'flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-[#C25949] bg-[#C25949] text-white text-xs font-medium';
       } else {
-        btn.className = 'flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle surface-muted text-ink text-xs font-medium transition hover:opacity-80';
+        btn.className = 'flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle surface-muted text-ink text-xs font-medium';
       }
     });
 
-    // Sex Activity buttons
     const sexActWrap = document.getElementById('sex-activity-options');
     sexActWrap.innerHTML = '';
     SEX_ACTIVITIES.forEach(function (act) {
       const active = draftCheckin.sexActivities.indexOf(act.id) !== -1;
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'tactile-btn px-3 py-2 rounded-xl text-xs font-medium border flex items-center gap-2 transition ' +
+      b.className = 'tactile-btn px-3 py-2 rounded-xl text-xs font-medium border flex items-center gap-2 ' +
         (active
-          ? 'bg-[#C95B78] text-white border-transparent shadow-2xs'
-          : 'surface-card border-subtle text-ink hover:opacity-85');
+          ? 'bg-[#C95B78] text-white border-transparent'
+          : 'surface-card border-subtle text-ink');
       b.innerHTML = '<span>' + act.icon + '</span><span>' + escapeHtml(act.label) + '</span>';
       b.addEventListener('click', function () {
         toggleArrayItem(draftCheckin.sexActivities, act.id);
@@ -1362,21 +1384,19 @@
       sexActWrap.appendChild(b);
     });
 
-    // Libido slider
     document.getElementById('checkin-libido-slider').value = String(draftCheckin.libido);
     document.getElementById('checkin-libido-val').textContent = LIBIDO_LABELS[draftCheckin.libido] || (draftCheckin.libido + ' / 5');
 
-    // Sex Qualities
     const sexQualWrap = document.getElementById('sex-quality-options');
     sexQualWrap.innerHTML = '';
     SEX_QUALITIES.forEach(function (q) {
       const active = draftCheckin.sexQualities.indexOf(q) !== -1;
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'tactile-btn px-2.5 py-1 rounded-full text-[11px] font-medium border transition ' +
+      b.className = 'tactile-btn px-2.5 py-1 rounded-full text-[11px] font-medium border ' +
         (active
           ? 'bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] border-transparent'
-          : 'surface-card border-subtle text-sub hover:text-ink');
+          : 'surface-card border-subtle text-sub');
       b.textContent = q;
       b.addEventListener('click', function () {
         toggleArrayItem(draftCheckin.sexQualities, q);
@@ -1385,17 +1405,16 @@
       sexQualWrap.appendChild(b);
     });
 
-    // Cervical Fluid options
     const cfWrap = document.getElementById('cervical-fluid-options');
     cfWrap.innerHTML = '';
     CERVICAL_FLUIDS.forEach(function (cf) {
       const active = draftCheckin.cervicalFluid === cf.id;
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'tactile-btn p-2.5 rounded-xl border text-left transition ' +
+      b.className = 'tactile-btn p-2.5 rounded-xl border text-left ' +
         (active
           ? 'bg-[#C4862D] text-white border-transparent'
-          : 'surface-card border-subtle text-ink hover:opacity-85');
+          : 'surface-card border-subtle text-ink');
       b.innerHTML = '<div class="text-xs font-medium">' + escapeHtml(cf.label) + '</div><div class="text-[10px] opacity-75">' + escapeHtml(cf.sub) + '</div>';
       b.addEventListener('click', function () {
         draftCheckin.cervicalFluid = cf.id;
@@ -1404,27 +1423,25 @@
       cfWrap.appendChild(b);
     });
 
-    // OPK strip buttons
     document.querySelectorAll('.opk-btn').forEach(function (btn) {
       const val = btn.getAttribute('data-opk');
       if (val === draftCheckin.opk) {
         btn.className = 'opk-btn px-2.5 py-1 rounded-lg text-[10px] font-mono bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
       } else {
-        btn.className = 'opk-btn px-2.5 py-1 rounded-lg text-[10px] font-mono surface-card text-sub hover:text-ink';
+        btn.className = 'opk-btn px-2.5 py-1 rounded-lg text-[10px] font-mono surface-card text-sub';
       }
     });
 
-    // Mood tags
     const moodWrap = document.getElementById('mood-options');
     moodWrap.innerHTML = '';
     MOOD_TAGS.forEach(function (tag) {
       const active = draftCheckin.moods.indexOf(tag) !== -1;
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'tactile-btn px-3 py-1.5 rounded-full text-xs font-medium border transition ' +
+      b.className = 'tactile-btn px-3 py-1.5 rounded-full text-xs font-medium border ' +
         (active
           ? 'bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] border-transparent'
-          : 'surface-muted border-subtle text-sub hover:text-ink');
+          : 'surface-muted border-subtle text-sub');
       b.textContent = tag;
       b.addEventListener('click', function () {
         toggleArrayItem(draftCheckin.moods, tag);
@@ -1433,17 +1450,16 @@
       moodWrap.appendChild(b);
     });
 
-    // Symptom tags
     const symWrap = document.getElementById('symptom-options');
     symWrap.innerHTML = '';
     SYMPTOM_TAGS.forEach(function (tag) {
       const active = draftCheckin.symptoms.indexOf(tag) !== -1;
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'tactile-btn px-3 py-1.5 rounded-full text-xs font-medium border transition ' +
+      b.className = 'tactile-btn px-3 py-1.5 rounded-full text-xs font-medium border ' +
         (active
           ? 'bg-[#3E7A6E] text-white border-transparent'
-          : 'surface-muted border-subtle text-sub hover:text-ink');
+          : 'surface-muted border-subtle text-sub');
       b.textContent = tag;
       b.addEventListener('click', function () {
         toggleArrayItem(draftCheckin.symptoms, tag);
@@ -1464,7 +1480,6 @@
     else arr.splice(idx, 1);
   }
 
-  // --- VIEW 4: BODY & MIND EDUCATIONAL ATLAS ---
   function renderAtlasView() {
     const grid = document.getElementById('atlas-cards-grid');
     if (!grid) return;
@@ -1474,7 +1489,7 @@
       if (c === atlasCategory) {
         b.className = 'atlas-cat-btn tactile-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
       } else {
-        b.className = 'atlas-cat-btn tactile-btn px-3 py-1.5 rounded-full text-xs font-medium surface-muted text-sub hover:text-ink';
+        b.className = 'atlas-cat-btn tactile-btn px-3 py-1.5 rounded-full text-xs font-medium surface-muted text-sub';
       }
     });
 
@@ -1495,14 +1510,13 @@
           '</div>' +
           '<div class="pt-3 border-t border-subtle space-y-1.5">' +
             '<p class="text-xs text-ink font-medium">' + escapeHtml(mod.takeaway) + '</p>' +
-            '<div class="text-[10px] font-mono text-faint">Reference: ' + escapeHtml(mod.sourceLabel) + '</div>' +
+            '<div class="text-[10px] font-mono text-faint">' + escapeHtml(mod.sourceLabel) + '</div>' +
           '</div>' +
         '</article>'
       );
     }).join('');
   }
 
-  // --- VIEW 5: ALL PROFILES (MULTI-PERSON OVERVIEW) ---
   function renderPeopleView() {
     const grid = document.getElementById('multi-profile-grid');
     grid.innerHTML = '';
@@ -1531,16 +1545,16 @@
 
           '<div class="mt-4 pt-3 border-t border-subtle space-y-2 text-xs">' +
             '<p class="text-ink font-medium leading-snug">' + escapeHtml(ph.headline) + '</p>' +
-            '<p class="text-sub leading-relaxed"><strong>Relational Cue:</strong> ' + escapeHtml(ph.partnerBody) + '</p>' +
+            '<p class="text-sub leading-relaxed"><strong>Care Cue:</strong> ' + escapeHtml(ph.partnerBody) + '</p>' +
           '</div>' +
         '</div>' +
 
         '<div class="pt-3 border-t border-subtle flex items-center justify-between text-xs">' +
           '<span class="font-mono text-sub">Next flow: <strong>' + formatShortDate(status.nextPeriodISO) + '</strong> (' + formatDeltaDays(status.daysUntilNextPeriod) + ')</span>' +
           '<div class="flex items-center gap-2">' +
-            '<button type="button" data-export-id="' + p.id + '" class="btn-card-export text-sub hover:text-ink underline font-mono text-[11px]">Export</button>' +
-            '<button type="button" data-edit-id="' + p.id + '" class="btn-card-edit text-sub hover:text-ink underline">Edit</button>' +
-            '<button type="button" data-switch-id="' + p.id + '" class="btn-card-switch tactile-btn px-3 py-1 rounded-full surface-muted text-ink font-medium hover:opacity-80">Inspect →</button>' +
+            '<button type="button" data-export-id="' + p.id + '" class="btn-card-export text-sub underline font-mono text-[11px]">Export</button>' +
+            '<button type="button" data-edit-id="' + p.id + '" class="btn-card-edit text-sub underline">Edit</button>' +
+            '<button type="button" data-switch-id="' + p.id + '" class="btn-card-switch tactile-btn px-3 py-1 rounded-full surface-muted text-ink font-medium">Inspect →</button>' +
           '</div>' +
         '</div>';
 
@@ -1573,7 +1587,6 @@
       });
     });
 
-    // Render 14-day side-by-side strip
     const timeline = document.getElementById('multi-person-timeline');
     let headerCells = '<div class="w-28 shrink-0 text-[11px] font-mono text-faint">Person</div>';
     for (let d = 0; d < 14; d++) {
@@ -1608,7 +1621,6 @@
     timeline.innerHTML = rowsHtml;
   }
 
-  // --- VIEW 6: HISTORY & ANALYTICS ---
   function renderHistoryView() {
     const p = getActiveProfile();
     if (!p) return;
@@ -1631,7 +1643,7 @@
               '<div class="flex items-center gap-2">' +
                 '<span class="font-mono text-sub">' + label + ' • Flow: ' + per.length + 'd</span>' +
                 (sorted.length > 1
-                  ? '<button type="button" data-del-start="' + per.start + '" class="btn-del-period text-[11px] font-mono text-[#C25949] hover:underline">Remove</button>'
+                  ? '<button type="button" data-del-start="' + per.start + '" class="btn-del-period text-[11px] font-mono text-[#C25949] underline">Remove</button>'
                   : '') +
               '</div>' +
             '</div>' +
@@ -1656,16 +1668,52 @@
     }
 
     const b = getPhaseBounds(p);
-    const acogStatus = (b.cycleLength >= 21 && b.cycleLength <= 35) ? 'Within ACOG normal range (21–35d)' : 'Outside typical 21–35d range';
+    const acogStatus = (b.cycleLength >= 21 && b.cycleLength <= 35) ? 'Normal (21–35d ACOG range)' : 'Evaluate (>35d or <21d)';
     document.getElementById('history-metrics-summary').innerHTML =
       '<div class="flex justify-between py-1.5 border-b border-subtle"><span class="text-sub">Average Cycle Length</span><span class="font-mono text-ink">' + b.cycleLength + ' days</span></div>' +
       '<div class="flex justify-between py-1.5 border-b border-subtle"><span class="text-sub">Average Bleeding Duration</span><span class="font-mono text-ink">' + b.periodLength + ' days</span></div>' +
       '<div class="flex justify-between py-1.5 border-b border-subtle"><span class="text-sub">Estimated Ovulation Day</span><span class="font-mono text-ink">Day ' + b.ovulationDay + '</span></div>' +
       '<div class="flex justify-between py-1.5 border-b border-subtle"><span class="text-sub">Luteal Phase Length</span><span class="font-mono text-ink">' + b.lutealLength + ' days</span></div>' +
-      '<div class="flex justify-between py-1.5"><span class="text-sub">Clinical Vital Sign Check</span><span class="font-mono text-[#3E7A6E]">' + acogStatus + '</span></div>';
+      '<div class="flex justify-between py-1.5"><span class="text-sub">Vital Sign Status</span><span class="font-mono text-[#3E7A6E]">' + acogStatus + '</span></div>';
+
+    // Render Phase Correlation Matrix
+    const phaseBuckets = {
+      menstrual: { title: 'Menstrual', color: '#C25949', tags: [] },
+      follicular: { title: 'Follicular', color: '#3E7A6E', tags: [] },
+      ovulatory: { title: 'Ovulatory', color: '#C4862D', tags: [] },
+      luteal: { title: 'Luteal', color: '#7C5879', tags: [] }
+    };
+
+    const logDates = Object.keys(p.logs || {}).sort().reverse();
+    logDates.forEach(function (iso) {
+      const st = getCycleStatusForDate(p, iso);
+      const pk = st.phaseInfo.phaseKey;
+      const entry = p.logs[iso];
+      if (phaseBuckets[pk]) {
+        (entry.moods || []).forEach(function (m) { phaseBuckets[pk].tags.push(m); });
+        (entry.symptoms || []).forEach(function (s) { phaseBuckets[pk].tags.push(s); });
+        if (entry.libido >= 4) phaseBuckets[pk].tags.push('High Desire');
+      }
+    });
+
+    const matrixEl = document.getElementById('phase-correlation-matrix');
+    matrixEl.innerHTML = Object.keys(phaseBuckets).map(function (k) {
+      const bucket = phaseBuckets[k];
+      const unique = Array.from(new Set(bucket.tags)).slice(0, 4);
+      return (
+        '<div class="surface-muted rounded-2xl p-3.5">' +
+          '<div class="flex items-center gap-2 mb-1.5">' +
+            '<span class="w-2 h-2 rounded-full" style="background-color:' + bucket.color + '"></span>' +
+            '<span class="font-medium text-ink">' + bucket.title + ' Patterns</span>' +
+          '</div>' +
+          '<div class="text-[11px] text-sub">' +
+            (unique.length ? escapeHtml(unique.join(' · ')) : 'Log daily check-ins to surface phase correlations') +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
 
     const logsEl = document.getElementById('history-logs-list');
-    const logDates = Object.keys(p.logs || {}).sort().reverse();
     if (logDates.length === 0) {
       logsEl.innerHTML = '<div class="text-faint italic">No daily check-in entries logged yet.</div>';
     } else {
@@ -1681,7 +1729,7 @@
           '<div class="surface-muted rounded-2xl p-3 space-y-1">' +
             '<div class="flex items-center justify-between font-mono text-[11px]">' +
               '<span class="text-ink font-medium">' + formatShortDate(iso) + '</span>' +
-              '<span class="text-sub">Energy ' + (entry.energy || 3) + '/5' +
+              '<span class="text-sub">Vitality ' + (entry.energy || 3) + '/5' +
                 (entry.libido ? ' • Desire ' + entry.libido + '/5' : '') +
                 (entry.bbt ? ' • ' + entry.bbt + '°F' : '') + '</span>' +
             '</div>' +
@@ -1701,12 +1749,12 @@
       .replace(/"/g, '&quot;');
   }
 
-  // --- MASTER RENDER DISPATCHER ---
   function renderAll() {
     const hasProfiles = Array.isArray(state.profiles) && state.profiles.length > 0;
     const onboardSec = document.getElementById('view-onboarding');
     const workspace = document.getElementById('workspace-authenticated');
     const mainNav = document.getElementById('main-nav-container');
+    const mobileDock = document.getElementById('mobile-bottom-dock');
     const logPeriodBtn = document.getElementById('btn-open-log-period');
 
     if (!hasProfiles) {
@@ -1714,15 +1762,17 @@
       onboardSec.classList.remove('hidden');
       workspace.classList.add('hidden');
       mainNav.classList.add('hidden');
+      mobileDock.classList.add('hidden');
       logPeriodBtn.classList.add('hidden');
       document.getElementById('profile-switcher-bar').innerHTML =
-        '<span class="text-xs font-mono text-faint">Onboarding — Create or import a profile</span>';
+        '<span class="text-xs font-mono text-faint">Welcome</span>';
       return;
     }
 
     onboardSec.classList.add('hidden');
     workspace.classList.remove('hidden');
     mainNav.classList.remove('hidden');
+    mobileDock.classList.remove('hidden');
     logPeriodBtn.classList.remove('hidden');
 
     const active = getActiveProfile();
@@ -1747,12 +1797,11 @@
     else if (state.activeView === 'history') renderHistoryView();
   }
 
-  // --- IMPORT / EXPORT PROFILE & VAULT FUNCTIONS ---
   function exportSingleProfileJSON(profile) {
     if (!profile) return;
     const payload = {
       type: 'cadence_single_profile',
-      version: '2.0',
+      version: '3.0',
       exportedAt: TODAY_ISO,
       profile: profile
     };
@@ -1808,7 +1857,6 @@
     reader.readAsText(file);
   }
 
-  // --- PROFILE MODAL HANDLERS ---
   function openProfileModal(profileObj) {
     const modal = document.getElementById('modal-profile');
     const delBtn = document.getElementById('btn-delete-profile');
@@ -1854,20 +1902,17 @@
     document.querySelectorAll('.color-swatch').forEach(function (sw) {
       const c = sw.getAttribute('data-color');
       if (c === selectedModalColor) {
-        sw.classList.add('ring-2', 'ring-[#1C1917]', 'dark:ring-[#F4EFEA]');
+        sw.classList.add('ring-2');
       } else {
-        sw.classList.remove('ring-2', 'ring-[#1C1917]', 'dark:ring-[#F4EFEA]');
+        sw.classList.remove('ring-2');
       }
     });
   }
 
-  // --- EVENT BINDINGS ---
   function bindEvents() {
-    // Initialize onboarding default date
     const onboardDateInput = document.getElementById('onboard-last-period');
     if (onboardDateInput) onboardDateInput.value = addDays(TODAY_ISO, -10);
 
-    // Onboarding sliders & pickers
     document.getElementById('onboard-cycle-len').addEventListener('input', function (e) {
       document.getElementById('onboard-cycle-val').textContent = e.target.value + ' days';
     });
@@ -1883,9 +1928,9 @@
         onboardGoal = btn.getAttribute('data-goal');
         document.querySelectorAll('.onboard-goal-btn').forEach(function (b) {
           if (b.getAttribute('data-goal') === onboardGoal) {
-            b.className = 'onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle text-left transition bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
+            b.className = 'onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle text-left bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
           } else {
-            b.className = 'onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left transition';
+            b.className = 'onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left';
           }
         });
       });
@@ -1896,9 +1941,9 @@
         onboardColor = sw.getAttribute('data-onboard-color');
         document.querySelectorAll('.onboard-swatch').forEach(function (s) {
           if (s.getAttribute('data-onboard-color') === onboardColor) {
-            s.classList.add('ring-2', 'ring-[#1C1917]', 'dark:ring-[#F4EFEA]');
+            s.classList.add('ring-2');
           } else {
-            s.classList.remove('ring-2', 'ring-[#1C1917]', 'dark:ring-[#F4EFEA]');
+            s.classList.remove('ring-2');
           }
         });
       });
@@ -1945,14 +1990,12 @@
       renderAll();
     });
 
-    // Theme toggle
     document.getElementById('btn-theme-toggle').addEventListener('click', function () {
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
       saveState();
       renderAll();
     });
 
-    // Navigation tabs
     document.querySelectorAll('.nav-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
         state.activeView = tab.getAttribute('data-view');
@@ -1961,18 +2004,55 @@
       });
     });
 
-    // Chart mode toggle (Hormones vs BBT)
+    document.querySelectorAll('.dock-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.activeView = btn.getAttribute('data-dock-view');
+        saveState();
+        renderAll();
+      });
+    });
+
+    // Copy Partner Care Note
+    document.getElementById('btn-copy-partner-note').addEventListener('click', function () {
+      const p = getActiveProfile();
+      if (!p) return;
+      const st = getCycleStatusForDate(p, TODAY_ISO);
+      const day = state.selectedCycleDay !== null ? state.selectedCycleDay : st.cycleDay;
+      const info = getDayInsight(p, day);
+      const note = p.name + ' is on Day ' + day + ' (' + info.phaseName + '). ' + info.partnerTitle + ': ' + info.partnerBody;
+      copyTextToClipboard(note);
+      const fb = document.getElementById('copy-partner-feedback');
+      fb.classList.remove('hidden');
+      setTimeout(function () { fb.classList.add('hidden'); }, 2200);
+    });
+
+    // Copy Doctor Summary
+    document.getElementById('btn-copy-doctor-summary').addEventListener('click', function () {
+      const p = getActiveProfile();
+      if (!p) return;
+      const b = getPhaseBounds(p);
+      const summary = 'Cadence Clinical Cycle Summary for ' + p.name + ' (' + TODAY_ISO + '):\n' +
+        '- Average Cycle Length: ' + b.cycleLength + ' days\n' +
+        '- Average Period Duration: ' + b.periodLength + ' days\n' +
+        '- Estimated Luteal Phase: ' + b.lutealLength + ' days\n' +
+        '- Recent Period Starts: ' + sortPeriods(p.periods).map(function (x) { return x.start; }).join(', ');
+      copyTextToClipboard(summary);
+      const fb = document.getElementById('copy-doctor-feedback');
+      fb.classList.remove('hidden');
+      setTimeout(function () { fb.classList.add('hidden'); }, 2400);
+    });
+
     document.getElementById('btn-chart-hormones').addEventListener('click', function () {
       chartMode = 'hormones';
       document.getElementById('btn-chart-hormones').className = 'tactile-btn px-3 py-1 rounded-full font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
-      document.getElementById('btn-chart-bbt').className = 'tactile-btn px-3 py-1 rounded-full font-medium text-sub hover:text-ink';
+      document.getElementById('btn-chart-bbt').className = 'tactile-btn px-3 py-1 rounded-full font-medium text-sub';
       renderCycleView();
     });
 
     document.getElementById('btn-chart-bbt').addEventListener('click', function () {
       chartMode = 'bbt';
       document.getElementById('btn-chart-bbt').className = 'tactile-btn px-3 py-1 rounded-full font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]';
-      document.getElementById('btn-chart-hormones').className = 'tactile-btn px-3 py-1 rounded-full font-medium text-sub hover:text-ink';
+      document.getElementById('btn-chart-hormones').className = 'tactile-btn px-3 py-1 rounded-full font-medium text-sub';
       renderCycleView();
     });
 
@@ -1983,7 +2063,6 @@
       renderAll();
     });
 
-    // Atlas category filter
     document.querySelectorAll('.atlas-cat-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         atlasCategory = btn.getAttribute('data-atlas-cat');
@@ -1991,7 +2070,6 @@
       });
     });
 
-    // Scrubber slider
     document.getElementById('cycle-day-slider').addEventListener('input', function (e) {
       state.selectedCycleDay = Number(e.target.value);
       renderCycleView();
@@ -2008,7 +2086,6 @@
       renderAll();
     });
 
-    // Calendar navigation
     document.getElementById('cal-prev-month').addEventListener('click', function () {
       state.calendarMonthOffset -= 1;
       renderCalendarView();
@@ -2046,7 +2123,6 @@
       renderAll();
     });
 
-    // Check-in form controls
     document.getElementById('checkin-date-input').addEventListener('change', function (e) {
       state.selectedCalendarDate = e.target.value || TODAY_ISO;
       loadCheckinForDate(state.selectedCalendarDate);
@@ -2120,7 +2196,6 @@
       loadCheckinForDate(iso);
     });
 
-    // Profile modal triggers
     document.getElementById('btn-edit-active-profile').addEventListener('click', function () {
       openProfileModal(getActiveProfile());
     });
@@ -2198,7 +2273,6 @@
       renderAll();
     });
 
-    // Quick Log Period Modal
     const periodModal = document.getElementById('modal-log-period');
     function openPeriodModal() {
       const p = getActiveProfile();
@@ -2237,7 +2311,6 @@
       renderAll();
     });
 
-    // Vault & PWA Modal
     const pwaModal = document.getElementById('modal-pwa');
     document.getElementById('btn-open-pwa').addEventListener('click', function () {
       pwaModal.classList.remove('hidden');
@@ -2294,7 +2367,6 @@
     setTimeout(function () { el.classList.add('hidden'); }, 3200);
   }
 
-  // Register Offline Service Worker (with graceful sandboxed fallback)
   function initOfflinePWA() {
     if ('serviceWorker' in navigator) {
       try {

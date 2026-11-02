@@ -3,67 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#F7F4EF" />
+  <meta name="theme-color" content="#F7F3EE" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Cadence" />
-  <title>Cadence — Cycle, Intimacy &amp; Psychobiology Studio</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="icon.svg" />
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          }
-        }
-      }
-    };
-  </script>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Cadence — Cycle, Intimacy &amp; Body Literacy</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
-<body data-phase="menstrual" class="min-h-screen flex flex-col selection:bg-stone-300 dark:selection:bg-stone-700">
-  <!-- Top Navigation & Multi-Profile Bar -->
-  <header class="sticky top-0 z-30 backdrop-blur-md bg-[#F7F4EF]/85 dark:bg-[#121010]/85 border-b border-subtle transition-colors">
+<body data-phase="menstrual" class="min-h-screen flex flex-col">
+  <!-- Top Bar: Calm, Native Sanctuary Header -->
+  <header class="sticky top-0 z-30 border-b border-subtle" style="background-color: var(--bg-elevated); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-3">
       <!-- Brand + Active Phase Aura Indicator -->
       <div class="flex items-center gap-3 shrink-0">
-        <div class="w-9 h-9 rounded-full border border-subtle flex items-center justify-center surface-card relative overflow-hidden" title="Phase-reactive botanical emblem">
-          <div id="brand-phase-dot" class="w-3.5 h-3.5 rounded-full bg-phase transition-all duration-500"></div>
+        <div class="w-9 h-9 rounded-full border border-subtle flex items-center justify-center surface-card relative overflow-hidden">
+          <div id="brand-phase-dot" class="w-3.5 h-3.5 rounded-full bg-phase"></div>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-serif text-2xl sm:text-[26px] tracking-tight text-ink leading-none">Cadence</span>
-            <span id="header-phase-pill" class="hidden md:inline-block text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full bg-phase-soft text-phase">Quiet Rhythm</span>
+            <span class="font-serif text-2xl sm:text-3xl tracking-tight text-ink leading-none">Cadence</span>
+            <span id="header-phase-pill" class="hidden md:inline-block text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-phase-soft text-phase">Quiet Rhythm</span>
           </div>
         </div>
       </div>
 
       <!-- Profile Switcher Pills -->
-      <div class="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full" id="profile-switcher-bar" role="tablist" aria-label="Tracked Profiles">
+      <div class="flex items-center gap-1.5 overflow-x-auto py-1" id="profile-switcher-bar" role="tablist" aria-label="Tracked Profiles">
         <!-- Populated dynamically by JS -->
       </div>
 
       <!-- Right Utility Controls -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <button id="btn-open-log-period" type="button" class="tactile-btn px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] hover:opacity-90 flex items-center gap-1.5 shadow-2xs">
+        <button id="btn-open-log-period" type="button" class="tactile-btn px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-[#C25949]"></span>
           <span>Log Period</span>
         </button>
-        <button id="btn-open-pwa" type="button" title="Vault Import/Export &amp; Offline PWA" class="tactile-btn p-2 rounded-full surface-card hover:opacity-80 text-sub" aria-label="Vault and PWA settings">
+        <button id="btn-open-pwa" type="button" title="Backup, Export &amp; Privacy Vault" class="tactile-btn p-2 rounded-full surface-card text-sub" aria-label="Vault and backup settings">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
         </button>
-        <button id="btn-theme-toggle" type="button" title="Toggle light/dark mode" class="tactile-btn p-2 rounded-full surface-card hover:opacity-80 text-sub" aria-label="Toggle color theme">
+        <button id="btn-theme-toggle" type="button" title="Toggle light/dark mode" class="tactile-btn p-2 rounded-full surface-card text-sub" aria-label="Toggle color theme">
           <svg id="icon-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
           </svg>
@@ -74,9 +56,9 @@
       </div>
     </div>
 
-    <!-- Primary View Navigation (Responsive Scrollable Pill Bar) -->
+    <!-- Desktop Primary Navigation Bar -->
     <div id="main-nav-container" class="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between border-t border-subtle text-xs">
-      <nav class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1.5 no-scrollbar" aria-label="Main Views">
+      <nav class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1.5" aria-label="Main Views">
         <button type="button" data-view="cycle" class="nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap">Cycle &amp; Behavior</button>
         <button type="button" data-view="calendar" class="nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap">Calendar &amp; Forecast</button>
         <button type="button" data-view="checkin" class="nav-tab tactile-btn px-3 py-1.5 rounded-full font-medium whitespace-nowrap">Daily Log</button>
@@ -91,75 +73,97 @@
     </div>
   </header>
 
-  <!-- Main Workspace -->
+  <!-- Native Floating Mobile Bottom Navigation Dock -->
+  <div id="mobile-bottom-dock" class="mobile-dock hidden" role="navigation" aria-label="Mobile Navigation">
+    <button type="button" data-dock-view="cycle" class="dock-btn active">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>Today</span>
+    </button>
+    <button type="button" data-dock-view="calendar" class="dock-btn">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+      <span>Calendar</span>
+    </button>
+    <button type="button" data-dock-view="checkin" class="dock-btn">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <span>Check-In</span>
+    </button>
+    <button type="button" data-dock-view="people" class="dock-btn">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M15 19c.3-2.4 2.1-4.3 4.5-4.5"/></svg>
+      <span>Circles</span>
+    </button>
+    <button type="button" data-dock-view="atlas" class="dock-btn">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c2.5 4.5 5 7.5 0 18-5-10.5-2.5-13.5 0-18z"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/></svg>
+      <span>Guide</span>
+    </button>
+    <button type="button" data-dock-view="history" class="dock-btn">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
+      <span>History</span>
+    </button>
+  </div>
+
+  <!-- Main Sanctuary Container -->
   <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
     <!-- ONBOARDING VIEW (SHOWN WHEN NO PROFILES EXIST BY DEFAULT) -->
-    <section id="view-onboarding" class="py-4 sm:py-8 hidden">
-      <div class="max-w-2xl mx-auto surface-card rounded-3xl p-6 sm:p-10 shadow-sm relative overflow-hidden">
-        <!-- Decorative Botanical SVG Header -->
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-phase-soft flex items-center justify-center text-phase">
-              <svg class="w-7 h-7" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="20" cy="20" r="15" stroke-dasharray="3 3" opacity="0.5"/>
-                <path d="M20 7 C25 15, 28 21, 20 33 C12 21, 15 15, 20 7 Z" fill="currentColor" fill-opacity="0.18"/>
-                <circle cx="20" cy="11" r="2" fill="currentColor"/>
-              </svg>
-            </div>
-            <div>
-              <span class="text-[11px] font-mono uppercase tracking-widest text-phase">Zero-Cloud • Local-First Studio</span>
-              <h1 class="font-serif text-3xl sm:text-4xl text-ink leading-tight">Begin Your Cadence</h1>
-            </div>
+    <section id="view-onboarding" class="py-4 sm:py-6 hidden">
+      <div class="max-w-2xl mx-auto surface-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+        <div class="flex items-center gap-3.5 mb-5">
+          <div class="w-12 h-12 rounded-2xl bg-phase-soft flex items-center justify-center text-phase shrink-0">
+            <svg class="w-7 h-7" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="20" cy="20" r="15" stroke-dasharray="3 3" opacity="0.55"/>
+              <path d="M20 7 C25 15, 28 21, 20 33 C12 21, 15 15, 20 7 Z" fill="currentColor" fill-opacity="0.2"/>
+              <circle cx="20" cy="12" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-widest text-phase">Personal Cycle &amp; Body Sanctuary</span>
+            <h1 class="font-serif text-3xl sm:text-4xl text-ink leading-tight">Begin Your Cadence</h1>
           </div>
         </div>
 
         <p class="text-sm text-sub leading-relaxed mb-6">
-          Cadence starts completely empty—no pre-loaded profiles, no cloud accounts, and no ad trackers. Add yourself, a partner, or a family member to unlock cycle-reactive visuals, neurochemistry &amp; intimacy insights, and symptothermal forecasting.
+          Every body holds its own rhythm. Add your profile—or someone you care for—to translate cycle phases into calm visual cues for mood, energy, intimacy, and daily nourishment.
         </p>
 
-        <!-- Onboarding Profile Creation Form -->
         <form id="form-onboarding" class="space-y-5 text-xs">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="onboard-name" class="block font-mono uppercase tracking-wider text-sub mb-1.5">Name or Monogram</label>
-              <input id="onboard-name" type="text" required maxlength="32" placeholder="e.g. Elena, Maya, Me..." class="w-full px-3.5 py-2.5 rounded-xl surface-muted border border-subtle text-ink text-sm focus:outline-none focus:border-[#C25949]" />
+              <input id="onboard-name" type="text" required maxlength="32" placeholder="e.g. Elena, Maya..." class="w-full px-3.5 py-2.5 rounded-xl surface-muted border border-subtle text-ink text-sm" />
             </div>
             <div>
-              <label for="onboard-relation" class="block font-mono uppercase tracking-wider text-sub mb-1.5">Relationship / Role</label>
-              <select id="onboard-relation" class="w-full px-3.5 py-2.5 rounded-xl surface-muted border border-subtle text-ink text-sm focus:outline-none">
-                <option value="Self">Self (My Cycle)</option>
-                <option value="Partner">Partner</option>
-                <option value="Family">Family / Daughter / Sister</option>
+              <label for="onboard-relation" class="block font-mono uppercase tracking-wider text-sub mb-1.5">Who You Are Tracking</label>
+              <select id="onboard-relation" class="w-full px-3.5 py-2.5 rounded-xl surface-muted border border-subtle text-ink text-sm">
+                <option value="Self">Myself</option>
+                <option value="Partner">My Partner</option>
+                <option value="Family">Daughter / Sister / Family</option>
                 <option value="Friend">Close Friend</option>
               </select>
             </div>
           </div>
 
-          <!-- Life Stage / Primary Intention -->
           <div>
-            <label class="block font-mono uppercase tracking-wider text-sub mb-2">Primary Tracking Focus</label>
+            <label class="block font-mono uppercase tracking-wider text-sub mb-2">What Matters Most Right Now</label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="onboard-goal-picker">
-              <button type="button" data-goal="rhythm" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle text-left transition bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]">
+              <button type="button" data-goal="rhythm" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle text-left bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]">
                 <div class="font-medium text-xs">Body &amp; Mood</div>
                 <div class="text-[10px] opacity-75 mt-0.5">Energy &amp; hormones</div>
               </button>
-              <button type="button" data-goal="intimacy" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left transition">
+              <button type="button" data-goal="intimacy" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left">
                 <div class="font-medium text-xs">Intimacy &amp; FAM</div>
                 <div class="text-[10px] text-sub mt-0.5">Libido, BBT &amp; fluid</div>
               </button>
-              <button type="button" data-goal="conception" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left transition">
+              <button type="button" data-goal="conception" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left">
                 <div class="font-medium text-xs">Conception</div>
                 <div class="text-[10px] text-sub mt-0.5">Peak fertile window</div>
               </button>
-              <button type="button" data-goal="pmdd" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left transition">
+              <button type="button" data-goal="pmdd" class="onboard-goal-btn tactile-btn p-3 rounded-xl border border-subtle surface-muted text-ink text-left">
                 <div class="font-medium text-xs">PMDD / Perimenopause</div>
                 <div class="text-[10px] text-sub mt-0.5">Luteal &amp; symptom care</div>
               </button>
             </div>
           </div>
 
-          <!-- Cycle Parameters with Visual Readouts -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div class="surface-muted rounded-xl p-3.5">
               <div class="flex justify-between items-center mb-1">
@@ -192,12 +196,12 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
             <div>
               <label for="onboard-last-period" class="block font-mono uppercase tracking-wider text-sub mb-1.5">First Day of Most Recent Period</label>
-              <input id="onboard-last-period" type="date" required class="w-full px-3.5 py-2.5 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+              <input id="onboard-last-period" type="date" required class="w-full px-3.5 py-2.5 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
             </div>
             <div>
-              <label class="block font-mono uppercase tracking-wider text-sub mb-1.5">Signature Botanical Tone</label>
+              <label class="block font-mono uppercase tracking-wider text-sub mb-1.5">Botanical Tone</label>
               <div class="flex items-center gap-2.5" id="onboard-color-picker">
-                <button type="button" data-onboard-color="#C25949" class="onboard-swatch w-7 h-7 rounded-full bg-[#C25949] ring-2 ring-[#1C1917] dark:ring-[#F4EFEA]" aria-label="Terracotta"></button>
+                <button type="button" data-onboard-color="#C25949" class="onboard-swatch w-7 h-7 rounded-full bg-[#C25949] ring-2" aria-label="Terracotta"></button>
                 <button type="button" data-onboard-color="#3E7A6E" class="onboard-swatch w-7 h-7 rounded-full bg-[#3E7A6E]" aria-label="Celadon"></button>
                 <button type="button" data-onboard-color="#C4862D" class="onboard-swatch w-7 h-7 rounded-full bg-[#C4862D]" aria-label="Marigold"></button>
                 <button type="button" data-onboard-color="#7C5879" class="onboard-swatch w-7 h-7 rounded-full bg-[#7C5879]" aria-label="Velvet Fig"></button>
@@ -208,15 +212,15 @@
 
           <div class="pt-4 border-t border-subtle flex flex-wrap items-center justify-between gap-3">
             <div class="flex flex-wrap items-center gap-2">
-              <label for="onboard-import-file" class="tactile-btn px-3.5 py-2 rounded-xl surface-muted text-ink font-medium cursor-pointer hover:opacity-85 inline-flex items-center gap-1.5">
+              <label for="onboard-import-file" class="tactile-btn px-3.5 py-2 rounded-xl surface-muted text-ink font-medium cursor-pointer inline-flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                 <span>Import Profile / Vault (.json)</span>
               </label>
               <input id="onboard-import-file" type="file" accept="application/json" class="hidden" />
-              <button type="button" id="btn-onboard-load-sample" class="tactile-btn px-3 py-2 rounded-xl text-sub hover:text-ink underline underline-offset-4">or load sample household</button>
+              <button type="button" id="btn-onboard-load-sample" class="tactile-btn px-3 py-2 rounded-xl text-sub underline underline-offset-4">or load sample household</button>
             </div>
 
-            <button type="submit" class="tactile-btn px-6 py-2.5 rounded-full bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] font-medium text-xs shadow-sm hover:opacity-90">
+            <button type="submit" class="tactile-btn px-6 py-2.5 rounded-full bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] font-medium text-xs">
               Create Profile &amp; Enter Studio →
             </button>
           </div>
@@ -224,26 +228,26 @@
       </div>
     </section>
 
-    <!-- ACTIVE WORKSPACE WRAPPER (HIDDEN WHEN ONBOARDING) -->
+    <!-- ACTIVE WORKSPACE WRAPPER -->
     <div id="workspace-authenticated">
 
-      <!-- Active Profile Context Banner -->
+      <!-- Active Profile Header Strip -->
       <section id="active-profile-banner" class="mb-6 flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-subtle">
         <div class="flex items-center gap-3.5">
-          <div id="active-avatar" class="w-12 h-12 rounded-2xl flex items-center justify-center font-serif text-2xl text-white shadow-xs shrink-0 transition-colors">M</div>
+          <div id="active-avatar" class="w-12 h-12 rounded-2xl flex items-center justify-center font-serif text-2xl text-white shrink-0">M</div>
           <div>
             <div class="flex flex-wrap items-center gap-2">
               <h1 id="active-profile-name" class="font-serif text-2xl sm:text-3xl tracking-tight text-ink leading-none">Profile</h1>
               <span id="active-profile-relation" class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full surface-muted text-sub">Self</span>
               <span id="active-profile-goal-badge" class="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-phase-soft text-phase">Body &amp; Mood</span>
-              <button id="btn-edit-active-profile" type="button" class="text-xs text-faint hover:text-ink underline underline-offset-4 ml-1 transition">Edit profile</button>
-              <button id="btn-export-active-profile" type="button" class="text-xs font-mono text-faint hover:text-ink underline underline-offset-4 ml-1 transition" title="Export only this person's JSON profile">Export person</button>
+              <button id="btn-edit-active-profile" type="button" class="text-xs text-faint underline underline-offset-4 ml-1">Edit profile</button>
+              <button id="btn-export-active-profile" type="button" class="text-xs font-mono text-faint underline underline-offset-4 ml-1">Export person</button>
             </div>
             <p id="active-profile-summary" class="text-xs sm:text-sm text-sub mt-1"></p>
           </div>
         </div>
 
-        <!-- Visual Key Countdown Metrics Strip -->
+        <!-- 3 Tactile Metric Pills -->
         <div class="grid grid-cols-3 gap-2 sm:gap-3 w-full sm:w-auto">
           <div class="surface-card rounded-2xl px-3.5 py-2.5">
             <div class="text-[10px] font-mono uppercase tracking-wider text-faint">Cycle Day</div>
@@ -260,25 +264,24 @@
         </div>
       </section>
 
-      <!-- VIEW 1: CYCLE, VISUAL CUES & PSYCHOBIOLOGY -->
+      <!-- VIEW 1: CYCLE, VISUAL CUES & EMBODIED WISDOM -->
       <section id="view-cycle" class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
           <!-- Left Column: Sculptural Cycle Ring + Morphing Botanical Core (5 cols) -->
           <div class="lg:col-span-5 surface-card rounded-3xl p-5 sm:p-6 flex flex-col items-center">
             <div class="w-full flex items-center justify-between mb-1">
-              <span class="text-[11px] font-mono uppercase tracking-wider text-faint">Cycle Dial &amp; Intimacy Orbit</span>
-              <button id="btn-reset-today" type="button" class="tactile-btn text-xs font-mono text-phase bg-phase-soft px-2.5 py-0.5 rounded-full transition hidden">Return to Today</button>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-faint">Living Cycle Wheel</span>
+              <button id="btn-reset-today" type="button" class="tactile-btn text-xs font-mono text-phase bg-phase-soft px-2.5 py-0.5 rounded-full hidden">Return to Today</button>
             </div>
 
             <!-- Interactive SVG Cycle Ring with Central Morphing Botanical Emblem -->
             <div class="relative w-64 h-64 sm:w-72 sm:h-72 my-2 flex items-center justify-center">
               <svg id="cycle-ring-svg" viewBox="0 0 280 280" class="w-full h-full overflow-visible" aria-label="Interactive Cycle Phase and Intimacy Dial"></svg>
-              <!-- Center Readout + Morphing Botanical Glyph -->
-              <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-10">
-                <div id="dial-botanical-glyph" class="w-10 h-10 mb-1 botanical-breathe"></div>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none" style="padding: 28px 46px;">
+                <div id="dial-botanical-glyph" class="w-8 h-8 mb-0.5 botanical-breathe"></div>
                 <span id="dial-date-label" class="text-[10px] font-mono uppercase tracking-widest text-faint">TODAY</span>
-                <div id="dial-day-number" class="font-serif text-4xl sm:text-5xl text-ink leading-none my-0.5">Day 14</div>
+                <div id="dial-day-number" class="font-serif text-3xl sm:text-4xl text-ink leading-none my-0.5">Day 14</div>
                 <span id="dial-phase-pill" class="text-[11px] font-medium px-2.5 py-0.5 rounded-full mt-1">Ovulatory Phase</span>
                 <span id="dial-sub-caption" class="text-[10px] text-sub mt-1 leading-tight">Estrogen peak &amp; LH surge</span>
               </div>
@@ -287,7 +290,7 @@
             <!-- Tactile Day Scrubber -->
             <div class="w-full mt-2 pt-3.5 border-t border-subtle">
               <div class="flex items-center justify-between text-xs mb-1.5">
-                <label for="cycle-day-slider" class="text-sub font-medium">Scrub cycle timeline</label>
+                <label for="cycle-day-slider" class="text-sub font-medium">Explore any day of cycle</label>
                 <span id="scrubber-day-readout" class="font-mono text-ink">Day 14 of 28</span>
               </div>
               <input id="cycle-day-slider" type="range" min="1" max="28" value="14" class="w-full" />
@@ -298,8 +301,8 @@
               </div>
             </div>
 
-            <!-- Visual Ring Legend (Including Intimacy & Ovulation Markers) -->
-            <div class="w-full grid grid-cols-2 gap-y-1.5 gap-x-2 mt-4 pt-3 border-t border-subtle text-[11px]">
+            <!-- Visual Ring Legend -->
+            <div class="w-full grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-subtle text-[11px]">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#C25949] shrink-0"></span>
                 <span class="text-sub truncate" id="legend-menstrual">Menstrual (D1–5)</span>
@@ -319,12 +322,12 @@
               <div class="flex items-center gap-2 col-span-2 pt-1 text-[10px] font-mono text-faint">
                 <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#C95B78] inline-block"></span>Intimacy logged</span>
                 <span>•</span>
-                <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full border border-current inline-block"></span>Today marker</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#C4862D] inline-block"></span>Ovulation peak</span>
               </div>
             </div>
           </div>
 
-          <!-- Right Column: Visual-First Somatosensory Compass & Neuro-Behavioral Cues (7 cols) -->
+          <!-- Right Column: Visual-First Somatosensory Compass & Embodied Guidance (7 cols) -->
           <div class="lg:col-span-7 space-y-4">
 
             <!-- Top Card: Headline + 6-Axis Visual Somatosensory Petal Rose -->
@@ -343,98 +346,116 @@
                   <p id="insight-physiology" class="text-xs sm:text-sm text-sub mt-2.5 leading-relaxed"></p>
 
                   <!-- Visual Cue Pills (Non-Verbal At-a-Glance Chips) -->
-                  <div id="visual-cue-strip" class="flex flex-wrap gap-1.5 mt-3.5">
-                    <!-- Populated by JS with SVG icon cues -->
-                  </div>
+                  <div id="visual-cue-strip" class="flex flex-wrap gap-1.5 mt-3.5"></div>
                 </div>
 
-                <!-- 6-Axis Somatosensory Petal Rose SVG (Visualizes state without reading paragraphs!) -->
+                <!-- 6-Axis Somatosensory Petal Rose SVG -->
                 <div class="sm:col-span-5 flex flex-col items-center justify-center surface-muted rounded-2xl p-3">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-faint mb-1">Biometric Petal Rose</span>
-                  <svg id="petal-rose-svg" viewBox="0 0 210 190" class="w-44 h-40 overflow-visible" aria-label="6-Axis Somatosensory Radar Chart"></svg>
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-faint mb-1">Body &amp; Mind Balance</span>
+                  <svg id="petal-rose-svg" viewBox="0 0 210 190" class="w-44 h-40 overflow-visible" aria-label="6-Axis Somatosensory Petal Rose"></svg>
                 </div>
               </div>
 
-              <!-- 4 Quantitative Biometric Bars (Preserved & Upgraded) -->
+              <!-- 4 Visual Biometric Gauges -->
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-subtle">
                 <div>
                   <div class="flex justify-between text-[11px] font-mono text-sub mb-1">
-                    <span>Energy</span>
+                    <span>Vitality</span>
                     <span id="bar-label-energy">90%</span>
                   </div>
                   <div class="h-1.5 w-full rounded-full surface-muted overflow-hidden">
-                    <div id="bar-fill-energy" class="h-full rounded-full bg-[#3E7A6E] transition-all duration-300" style="width:90%"></div>
+                    <div id="bar-fill-energy" class="h-full rounded-full bg-[#3E7A6E]" style="width:90%"></div>
                   </div>
                 </div>
                 <div>
                   <div class="flex justify-between text-[11px] font-mono text-sub mb-1">
-                    <span>Calm / GABA</span>
+                    <span>Emotional Ease</span>
                     <span id="bar-label-mood">85%</span>
                   </div>
                   <div class="h-1.5 w-full rounded-full surface-muted overflow-hidden">
-                    <div id="bar-fill-mood" class="h-full rounded-full bg-[#7C5879] transition-all duration-300" style="width:85%"></div>
+                    <div id="bar-fill-mood" class="h-full rounded-full bg-[#7C5879]" style="width:85%"></div>
                   </div>
                 </div>
                 <div>
                   <div class="flex justify-between text-[11px] font-mono text-sub mb-1">
-                    <span>Focus &amp; Verbal</span>
+                    <span>Clarity &amp; Voice</span>
                     <span id="bar-label-focus">92%</span>
                   </div>
                   <div class="h-1.5 w-full rounded-full surface-muted overflow-hidden">
-                    <div id="bar-fill-focus" class="h-full rounded-full bg-[#C4862D] transition-all duration-300" style="width:92%"></div>
+                    <div id="bar-fill-focus" class="h-full rounded-full bg-[#C4862D]" style="width:92%"></div>
                   </div>
                 </div>
                 <div>
                   <div class="flex justify-between text-[11px] font-mono text-sub mb-1">
-                    <span>Rest Need</span>
+                    <span>Need for Stillness</span>
                     <span id="bar-label-recovery">35%</span>
                   </div>
                   <div class="h-1.5 w-full rounded-full surface-muted overflow-hidden">
-                    <div id="bar-fill-recovery" class="h-full rounded-full bg-[#C25949] transition-all duration-300" style="width:35%"></div>
+                    <div id="bar-fill-recovery" class="h-full rounded-full bg-[#C25949]" style="width:35%"></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- 4 Visual-Guided Domain Cards (Neurochemistry, Cognition, Body/Desire, Partner) -->
+            <!-- 4 Warm, Human-Centered Guidance Cards (No robotic 01/02 numbers!) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="surface-card surface-card-interactive rounded-2xl p-5">
                 <div class="flex items-center justify-between mb-1.5">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-faint">01 / Neurochemistry &amp; Affect</span>
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-phase">Inner Weather &amp; Mood</span>
                   <span id="glyph-neuro" class="text-phase"></span>
                 </div>
-                <h3 id="card-mood-title" class="font-medium text-sm text-ink mb-1">Elevated Dopamine &amp; Serotonin</h3>
+                <h3 id="card-mood-title" class="font-serif text-xl text-ink mb-1">Elevated Dopamine &amp; Serotonin</h3>
                 <p id="card-mood-body" class="text-xs text-sub leading-relaxed"></p>
               </div>
 
               <div class="surface-card surface-card-interactive rounded-2xl p-5">
                 <div class="flex items-center justify-between mb-1.5">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-faint">02 / Cognition &amp; Architecture</span>
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-phase">Focus &amp; Daily Pace</span>
                   <span id="glyph-cognition" class="text-phase"></span>
                 </div>
-                <h3 id="card-behavior-title" class="font-medium text-sm text-ink mb-1">Communicative &amp; Decisive</h3>
+                <h3 id="card-behavior-title" class="font-serif text-xl text-ink mb-1">Communicative &amp; Decisive</h3>
                 <p id="card-behavior-body" class="text-xs text-sub leading-relaxed"></p>
               </div>
 
               <div class="surface-card surface-card-interactive rounded-2xl p-5">
                 <div class="flex items-center justify-between mb-1.5">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-faint">03 / Desire, BBT &amp; Somatics</span>
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-phase">Desire, Body &amp; Sleep</span>
                   <span id="glyph-body" class="text-phase"></span>
                 </div>
-                <h3 id="card-body-title" class="font-medium text-sm text-ink mb-1">Spontaneous Desire &amp; Thermal Shift</h3>
+                <h3 id="card-body-title" class="font-serif text-xl text-ink mb-1">Spontaneous Desire &amp; Thermal Shift</h3>
                 <p id="card-body-body" class="text-xs text-sub leading-relaxed"></p>
               </div>
 
-              <div class="surface-card surface-card-interactive rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-1.5">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-faint">04 / Relational &amp; Partner Cue</span>
-                  <span id="partner-badge" class="text-[10px] font-mono px-2 py-0.5 rounded surface-muted text-sub">Co-Regulation</span>
+              <div class="surface-card surface-card-interactive rounded-2xl p-5 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[10px] font-mono uppercase tracking-wider text-phase">Partner &amp; Care Context</span>
+                    <span id="partner-badge" class="text-[10px] font-mono px-2 py-0.5 rounded surface-muted text-sub">Shared Rhythm</span>
+                  </div>
+                  <h3 id="card-partner-title" class="font-serif text-xl text-ink mb-1">Shared Momentum</h3>
+                  <p id="card-partner-body" class="text-xs text-sub leading-relaxed"></p>
                 </div>
-                <h3 id="card-partner-title" class="font-medium text-sm text-ink mb-1">Shared Momentum</h3>
-                <p id="card-partner-body" class="text-xs text-sub leading-relaxed"></p>
+                <div class="mt-3 pt-2.5 border-t border-subtle flex items-center justify-between">
+                  <button type="button" id="btn-copy-partner-note" class="tactile-btn text-[11px] font-mono text-phase underline underline-offset-4">Copy care note for partner</button>
+                  <span id="copy-partner-feedback" class="text-[10px] font-mono text-[#3E7A6E] hidden">Copied!</span>
+                </div>
               </div>
             </div>
 
+          </div>
+        </div>
+
+        <!-- Daily Nourishment, Movement & Nervous System Rituals Strip (NEW!) -->
+        <div class="surface-card rounded-3xl p-5 sm:p-6">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-phase">Embodied Care for This Phase</span>
+              <h3 class="font-serif text-xl sm:text-2xl text-ink">Nourishment, Movement &amp; Evening Ritual</h3>
+            </div>
+            <span id="ritual-metabolic-badge" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full surface-muted text-sub">Basal metabolism steady</span>
+          </div>
+          <div id="daily-rituals-strip" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <!-- Populated by JS with custom SVG icons & grounded care tips -->
           </div>
         </div>
 
@@ -443,12 +464,12 @@
           <div class="lg:col-span-7 surface-card rounded-3xl p-5 sm:p-6">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div>
-                <span class="text-[11px] font-mono uppercase tracking-wider text-faint">Endocrine &amp; Thermal Studio</span>
-                <h3 class="font-serif text-xl sm:text-2xl text-ink">Hormone &amp; BBT Trajectory</h3>
+                <span class="text-[11px] font-mono uppercase tracking-wider text-faint">Biological Rhythm</span>
+                <h3 class="font-serif text-xl sm:text-2xl text-ink">Hormone &amp; Temperature Curve</h3>
               </div>
               <div class="flex items-center gap-1 surface-muted p-1 rounded-full text-xs">
                 <button type="button" id="btn-chart-hormones" class="tactile-btn px-3 py-1 rounded-full font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]">Hormones (E₂/P₄/LH)</button>
-                <button type="button" id="btn-chart-bbt" class="tactile-btn px-3 py-1 rounded-full font-medium text-sub hover:text-ink">BBT &amp; Fluid Curve</button>
+                <button type="button" id="btn-chart-bbt" class="tactile-btn px-3 py-1 rounded-full font-medium text-sub">BBT &amp; Fluid Curve</button>
               </div>
             </div>
 
@@ -457,22 +478,19 @@
             </div>
             <div class="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3 border-t border-subtle">
               <p id="hormone-day-note" class="text-xs text-sub font-mono"></p>
-              <button type="button" id="btn-quick-log-intimacy" class="tactile-btn text-xs font-mono text-phase hover:underline">+ Log Intimacy / BBT for Today →</button>
+              <button type="button" id="btn-quick-log-intimacy" class="tactile-btn text-xs font-mono text-phase underline">+ Log Intimacy / BBT for Today →</button>
             </div>
           </div>
 
-          <!-- Upcoming Key Dates for Active Person (5 cols) -->
           <div class="lg:col-span-5 surface-card rounded-3xl p-5 sm:p-6 flex flex-col justify-between">
             <div>
-              <span class="text-[11px] font-mono uppercase tracking-wider text-faint">Forward Projection</span>
-              <h3 class="font-serif text-xl sm:text-2xl text-ink mb-4">Upcoming Cycle Windows</h3>
-              <div id="upcoming-milestones-list" class="space-y-3">
-                <!-- Populated by JS -->
-              </div>
+              <span class="text-[11px] font-mono uppercase tracking-wider text-faint">Upcoming Horizon</span>
+              <h3 class="font-serif text-xl sm:text-2xl text-ink mb-4">Next Key Windows</h3>
+              <div id="upcoming-milestones-list" class="space-y-3"></div>
             </div>
             <div class="mt-5 pt-3 border-t border-subtle flex items-center justify-between text-xs text-sub">
               <span id="cycle-stats-footer">Avg Cycle: 28d • Period: 5d • Luteal: 14d</span>
-              <button type="button" id="btn-jump-calendar" class="font-mono underline underline-offset-4 text-ink hover:opacity-75">Open Full Calendar →</button>
+              <button type="button" id="btn-jump-calendar" class="font-mono underline underline-offset-4 text-ink">Open Full Calendar →</button>
             </div>
           </div>
         </div>
@@ -484,13 +502,13 @@
           <div class="lg:col-span-7 surface-card rounded-3xl p-5 sm:p-6">
             <div class="flex items-center justify-between mb-5">
               <div>
-                <span class="text-xs font-mono uppercase tracking-wider text-faint">Cycle, Intimacy &amp; Biomarker Calendar</span>
+                <span class="text-xs font-mono uppercase tracking-wider text-faint">Monthly Rhythm</span>
                 <h2 id="cal-month-title" class="font-serif text-2xl sm:text-3xl text-ink">November 2026</h2>
               </div>
               <div class="flex items-center gap-1.5">
-                <button type="button" id="cal-prev-month" class="tactile-btn p-2 rounded-xl surface-muted hover:opacity-80 text-ink" aria-label="Previous month">←</button>
-                <button type="button" id="cal-today-btn" class="tactile-btn px-3 py-1.5 rounded-xl surface-muted hover:opacity-80 text-xs font-mono text-ink">Today</button>
-                <button type="button" id="cal-next-month" class="tactile-btn p-2 rounded-xl surface-muted hover:opacity-80 text-ink" aria-label="Next month">→</button>
+                <button type="button" id="cal-prev-month" class="tactile-btn p-2 rounded-xl surface-muted text-ink" aria-label="Previous month">←</button>
+                <button type="button" id="cal-today-btn" class="tactile-btn px-3 py-1.5 rounded-xl surface-muted text-xs font-mono text-ink">Today</button>
+                <button type="button" id="cal-next-month" class="tactile-btn p-2 rounded-xl surface-muted text-ink" aria-label="Next month">→</button>
               </div>
             </div>
 
@@ -498,16 +516,14 @@
               <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
             </div>
 
-            <div id="calendar-grid" class="grid grid-cols-7 gap-1.5">
-              <!-- Populated by JS -->
-            </div>
+            <div id="calendar-grid" class="grid grid-cols-7 gap-1.5"></div>
 
             <div class="flex flex-wrap items-center gap-4 mt-5 pt-4 border-t border-subtle text-xs text-sub">
               <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-[#C25949] inline-block"></span>Logged Period</span>
               <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded border border-dashed border-[#C25949] bg-[#C25949]/15 inline-block"></span>Predicted Period</span>
               <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-[#C4862D]/20 border border-[#C4862D] inline-block"></span>Fertile / Ovulation</span>
               <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#C95B78] inline-block"></span>Intimacy</span>
-              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-ink inline-block"></span>Symptom Log</span>
+              <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-phase inline-block"></span>Daily Note</span>
             </div>
           </div>
 
@@ -520,22 +536,18 @@
               <h3 id="cal-selected-phase" class="font-serif text-2xl text-ink">Ovulatory Window</h3>
               <p id="cal-selected-summary" class="text-xs sm:text-sm text-sub mt-1.5 leading-relaxed"></p>
 
-              <div id="cal-selected-logs" class="mt-4 pt-3 border-t border-subtle text-xs space-y-2">
-                <!-- Populated by JS -->
-              </div>
+              <div id="cal-selected-logs" class="mt-4 pt-3 border-t border-subtle text-xs space-y-2"></div>
 
               <div class="mt-4 pt-3 border-t border-subtle flex flex-wrap gap-2">
-                <button type="button" id="btn-cal-toggle-period" class="tactile-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[#C25949] text-white hover:opacity-90 transition">Mark Period Start Here</button>
-                <button type="button" id="btn-cal-open-checkin" class="tactile-btn px-3 py-1.5 rounded-xl text-xs font-medium surface-muted text-ink hover:opacity-80 transition">Log Mood / Symptoms for Date</button>
+                <button type="button" id="btn-cal-toggle-period" class="tactile-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-[#C25949] text-white">Mark Period Start Here</button>
+                <button type="button" id="btn-cal-open-checkin" class="tactile-btn px-3 py-1.5 rounded-xl text-xs font-medium surface-muted text-ink">Log Mood / Symptoms for Date</button>
               </div>
             </div>
 
             <div class="surface-card rounded-3xl p-5 sm:p-6">
-              <span class="text-xs font-mono uppercase tracking-wider text-faint">3-Month Horizon</span>
+              <span class="text-xs font-mono uppercase tracking-wider text-faint">Three-Cycle Outlook</span>
               <h3 class="font-serif text-xl text-ink mb-3">Upcoming Cycles</h3>
-              <div id="three-cycle-forecast" class="space-y-3 text-xs">
-                <!-- Populated by JS -->
-              </div>
+              <div id="three-cycle-forecast" class="space-y-3 text-xs"></div>
             </div>
           </div>
         </div>
@@ -546,82 +558,74 @@
         <div class="surface-card rounded-3xl p-5 sm:p-8 max-w-3xl mx-auto">
           <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-subtle">
             <div>
-              <span class="text-xs font-mono uppercase tracking-wider text-faint">Tactile Daily Check-In</span>
-              <h2 class="font-serif text-2xl sm:text-3xl text-ink">Daily Log for <span id="checkin-profile-name">Profile</span></h2>
+              <span class="text-xs font-mono uppercase tracking-wider text-phase">Daily Reflection &amp; Signals</span>
+              <h2 class="font-serif text-2xl sm:text-3xl text-ink">Check-In for <span id="checkin-profile-name">Profile</span></h2>
             </div>
             <div class="flex items-center gap-2">
               <label for="checkin-date-input" class="text-xs font-mono text-sub">Date:</label>
-              <input type="date" id="checkin-date-input" class="px-3 py-1.5 rounded-xl surface-muted border border-subtle text-xs font-mono text-ink focus:outline-none" />
+              <input type="date" id="checkin-date-input" class="px-3 py-1.5 rounded-xl surface-muted border border-subtle text-xs font-mono text-ink" />
             </div>
           </div>
 
           <form id="checkin-form" class="space-y-6 mt-6">
-            <!-- 01 / Menstrual Flow with Visual Droplets -->
+            <!-- Bleeding & Flow Volume -->
             <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-sub mb-2.5">01 / Bleeding &amp; Flow Volume</label>
+              <label class="block text-xs font-mono uppercase tracking-wider text-sub mb-2.5">Bleeding &amp; Flow</label>
               <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="flow-options">
-                <button type="button" data-flow="none" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium transition">None</button>
-                <button type="button" data-flow="spotting" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium transition"><svg class="w-3 h-3 inline mr-1" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="2.5"/></svg>Spotting</button>
-                <button type="button" data-flow="light" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium transition"><svg class="w-3 h-3 inline mr-1" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1 C8.5 5, 9.5 7, 6 11 C2.5 7, 3.5 5, 6 1 Z"/></svg>Light</button>
-                <button type="button" data-flow="medium" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium transition"><svg class="w-3.5 h-3 inline mr-1" viewBox="0 0 16 12" fill="currentColor"><path d="M5 1 C7 5, 8 7, 5 11 C2 7, 3 5, 5 1 Z M11 1 C13 5, 14 7, 11 11 C8 7, 9 5, 11 1 Z"/></svg>Medium</button>
-                <button type="button" data-flow="heavy" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium transition"><svg class="w-4 h-3 inline mr-1" viewBox="0 0 20 12" fill="currentColor"><path d="M4 1 C6 5, 6.5 7, 4 11 C1.5 7, 2 5, 4 1 Z M10 1 C12 5, 12.5 7, 10 11 C7.5 7, 8 5, 10 1 Z M16 1 C18 5, 18.5 7, 16 11 C13.5 7, 14 5, 16 1 Z"/></svg>Heavy</button>
+                <button type="button" data-flow="none" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium">None</button>
+                <button type="button" data-flow="spotting" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium"><svg class="w-3 h-3 inline mr-1" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="2.5"/></svg>Spotting</button>
+                <button type="button" data-flow="light" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium"><svg class="w-3 h-3 inline mr-1" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1 C8.5 5, 9.5 7, 6 11 C2.5 7, 3.5 5, 6 1 Z"/></svg>Light</button>
+                <button type="button" data-flow="medium" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium"><svg class="w-3.5 h-3 inline mr-1" viewBox="0 0 16 12" fill="currentColor"><path d="M5 1 C7 5, 8 7, 5 11 C2 7, 3 5, 5 1 Z M11 1 C13 5, 14 7, 11 11 C8 7, 9 5, 11 1 Z"/></svg>Medium</button>
+                <button type="button" data-flow="heavy" class="flow-btn tactile-btn px-3 py-2.5 rounded-xl border border-subtle text-xs font-medium"><svg class="w-4 h-3 inline mr-1" viewBox="0 0 20 12" fill="currentColor"><path d="M4 1 C6 5, 6.5 7, 4 11 C1.5 7, 2 5, 4 1 Z M10 1 C12 5, 12.5 7, 10 11 C7.5 7, 8 5, 10 1 Z M16 1 C18 5, 18.5 7, 16 11 C13.5 7, 14 5, 16 1 Z"/></svg>Heavy</button>
               </div>
             </div>
 
-            <!-- 02 / Sex, Intimacy & Desire (NEW!) -->
+            <!-- Intimacy, Sex & Desire -->
             <div class="surface-muted rounded-2xl p-4 sm:p-5 space-y-4">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <label class="text-xs font-mono uppercase tracking-wider text-ink">02 / Sex, Intimacy &amp; Libido</label>
+                <label class="text-xs font-mono uppercase tracking-wider text-ink">Intimacy, Pleasure &amp; Desire</label>
                 <span id="checkin-fertility-context" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full surface-card text-phase">Conception Context</span>
               </div>
 
-              <!-- Sexual Activity Selector -->
               <div>
-                <div class="text-[11px] text-sub mb-2">Intimacy Activity (Select any that apply)</div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="sex-activity-options">
-                  <!-- Populated by JS -->
-                </div>
+                <div class="text-[11px] text-sub mb-2">Intimacy &amp; Connection</div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="sex-activity-options"></div>
               </div>
 
-              <!-- Desire / Libido 5-Step Visual Selector + Intimacy Qualities -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-subtle">
                 <div>
                   <div class="flex justify-between text-xs mb-1.5">
-                    <label for="checkin-libido-slider" class="font-medium text-ink">Desire / Libido Pulse</label>
+                    <label for="checkin-libido-slider" class="font-medium text-ink">Desire Pulse</label>
                     <span id="checkin-libido-val" class="font-mono text-phase">3 / 5 (Receptive)</span>
                   </div>
                   <input id="checkin-libido-slider" type="range" min="1" max="5" step="1" value="3" class="w-full" />
                   <div class="flex justify-between text-[10px] font-mono text-faint mt-1">
-                    <span>Quiet</span><span>Receptive</span><span>Spontaneous Peak</span>
+                    <span>Quiet</span><span>Receptive</span><span>Spontaneous</span>
                   </div>
                 </div>
 
                 <div>
-                  <div class="text-[11px] text-sub mb-1.5">Intimacy Qualities &amp; Somatic Response</div>
-                  <div class="flex flex-wrap gap-1.5" id="sex-quality-options">
-                    <!-- Populated by JS -->
-                  </div>
+                  <div class="text-[11px] text-sub mb-1.5">Experience &amp; Body Response</div>
+                  <div class="flex flex-wrap gap-1.5" id="sex-quality-options"></div>
                 </div>
               </div>
             </div>
 
-            <!-- 03 / Symptothermal Biomarkers: Cervical Fluid & Basal Body Temp -->
+            <!-- Cervical Fluid & Basal Body Temp -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="surface-muted rounded-2xl p-4">
-                <label class="block text-xs font-mono uppercase tracking-wider text-ink mb-2">03 / Cervical Fluid (Mucus)</label>
-                <div class="grid grid-cols-2 gap-1.5" id="cervical-fluid-options">
-                  <!-- Populated by JS -->
-                </div>
+                <label class="block text-xs font-mono uppercase tracking-wider text-ink mb-2">Cervical Fluid</label>
+                <div class="grid grid-cols-2 gap-1.5" id="cervical-fluid-options"></div>
               </div>
 
               <div class="surface-muted rounded-2xl p-4 flex flex-col justify-between">
                 <div>
-                  <label for="checkin-bbt-input" class="block text-xs font-mono uppercase tracking-wider text-ink mb-1.5">04 / Waking Basal Temp (°F) &amp; LH</label>
-                  <input id="checkin-bbt-input" type="number" step="0.01" min="95.0" max="103.0" placeholder="e.g. 97.62" class="w-full px-3 py-2 rounded-xl surface-card border border-subtle text-xs font-mono text-ink focus:outline-none" />
-                  <p class="text-[10px] text-faint mt-1">Progesterone elevates waking BBT by +0.4°F–0.8°F after ovulation.</p>
+                  <label for="checkin-bbt-input" class="block text-xs font-mono uppercase tracking-wider text-ink mb-1.5">Waking Basal Temp (°F) &amp; LH</label>
+                  <input id="checkin-bbt-input" type="number" step="0.01" min="95.0" max="103.0" placeholder="e.g. 97.62" class="w-full px-3 py-2 rounded-xl surface-card border border-subtle text-xs font-mono text-ink" />
+                  <p class="text-[10px] text-faint mt-1">Post-ovulation progesterone shifts waking temperature up by +0.4°F–0.8°F.</p>
                 </div>
                 <div class="mt-3 pt-2.5 border-t border-subtle flex items-center justify-between">
-                  <span class="text-[11px] text-sub">Ovulation Strip (LH):</span>
+                  <span class="text-[11px] text-sub">Ovulation Test (LH):</span>
                   <div class="flex gap-1" id="opk-options">
                     <button type="button" data-opk="none" class="opk-btn px-2 py-1 rounded text-[10px] font-mono surface-card text-sub">None</button>
                     <button type="button" data-opk="neg" class="opk-btn px-2 py-1 rounded text-[10px] font-mono surface-card text-sub">Neg (-)</button>
@@ -631,46 +635,42 @@
               </div>
             </div>
 
-            <!-- 05 / Mood & Affect -->
+            <!-- Mood & Inner Weather -->
             <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-sub mb-2.5">05 / Mood &amp; Neuro-Affective State</label>
-              <div class="flex flex-wrap gap-2" id="mood-options">
-                <!-- Populated by JS -->
-              </div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-sub mb-2.5">Mood &amp; Inner Weather</label>
+              <div class="flex flex-wrap gap-2" id="mood-options"></div>
             </div>
 
-            <!-- 06 / Physical Signals & Sleep -->
+            <!-- Physical Signals & Sleep -->
             <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-sub mb-2.5">06 / Somatic Signals &amp; Sleep Architecture</label>
-              <div class="flex flex-wrap gap-2" id="symptom-options">
-                <!-- Populated by JS -->
-              </div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-sub mb-2.5">Body Signals &amp; Sleep</label>
+              <div class="flex flex-wrap gap-2" id="symptom-options"></div>
             </div>
 
-            <!-- 07 / Energy Slider & Personal Note -->
+            <!-- Energy Slider & Personal Note -->
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 pt-2">
               <div class="sm:col-span-5 surface-muted rounded-2xl p-4">
                 <div class="flex justify-between text-xs mb-2">
-                  <label for="checkin-energy-slider" class="font-medium text-ink">Subjective Energy</label>
+                  <label for="checkin-energy-slider" class="font-medium text-ink">Vitality Level</label>
                   <span id="checkin-energy-val" class="font-mono text-sub">3 / 5</span>
                 </div>
                 <input id="checkin-energy-slider" type="range" min="1" max="5" step="1" value="3" class="w-full" />
                 <div class="flex justify-between text-[10px] font-mono text-faint mt-1">
-                  <span>1 (Depleted)</span><span>3 (Steady)</span><span>5 (Peak)</span>
+                  <span>1 (Low)</span><span>3 (Steady)</span><span>5 (Vibrant)</span>
                 </div>
               </div>
 
               <div class="sm:col-span-7">
-                <label for="checkin-notes" class="block text-xs font-mono uppercase tracking-wider text-sub mb-1.5">Observation Note</label>
-                <textarea id="checkin-notes" rows="2" placeholder="Sleep quality, focus, intimacy reflections, or boundaries needed today..." class="w-full px-3.5 py-2.5 rounded-2xl surface-muted border border-subtle text-xs sm:text-sm text-ink focus:outline-none"></textarea>
+                <label for="checkin-notes" class="block text-xs font-mono uppercase tracking-wider text-sub mb-1.5">Personal Reflection</label>
+                <textarea id="checkin-notes" rows="2" placeholder="Dreams, boundaries, cravings, or how your body felt today..." class="w-full px-3.5 py-2.5 rounded-2xl surface-muted border border-subtle text-xs sm:text-sm text-ink"></textarea>
               </div>
             </div>
 
             <div class="flex items-center justify-between pt-4 border-t border-subtle">
-              <span id="checkin-save-feedback" class="text-xs font-mono text-[#3E7A6E] opacity-0 transition-opacity">Saved to on-device vault.</span>
+              <span id="checkin-save-feedback" class="text-xs font-mono text-[#3E7A6E] opacity-0">Saved.</span>
               <div class="flex items-center gap-2">
-                <button type="button" id="btn-clear-checkin" class="tactile-btn px-3.5 py-2 rounded-xl text-xs font-medium surface-muted text-sub hover:text-ink transition">Clear Date</button>
-                <button type="submit" class="tactile-btn px-6 py-2.5 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] hover:opacity-90 transition">Save Entry</button>
+                <button type="button" id="btn-clear-checkin" class="tactile-btn px-3.5 py-2 rounded-xl text-xs font-medium surface-muted text-sub">Clear Date</button>
+                <button type="submit" class="tactile-btn px-6 py-2.5 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]">Save Entry</button>
               </div>
             </div>
           </form>
@@ -681,9 +681,9 @@
       <section id="view-atlas" class="space-y-6 hidden">
         <div class="flex flex-wrap items-end justify-between gap-4 pb-4 border-b border-subtle">
           <div>
-            <span class="text-xs font-mono uppercase tracking-wider text-phase">Evidence-Based Psychobiology &amp; Intimacy Library</span>
+            <span class="text-xs font-mono uppercase tracking-wider text-phase">Illustrated Body Literacy</span>
             <h2 class="font-serif text-3xl sm:text-4xl text-ink mt-0.5">Body &amp; Mind Atlas</h2>
-            <p class="text-xs sm:text-sm text-sub mt-1 max-w-2xl">Grounded in reproductive neuroendocrinology (NIH/PMC), ACOG clinical guidelines, and symptothermal fertility science—free of pink-washed clichés or diagnostic overclaims.</p>
+            <p class="text-xs sm:text-sm text-sub mt-1 max-w-2xl">How ovarian hormones shape brain neurochemistry, spontaneous versus responsive desire, waking temperature, and clinical cycle health.</p>
           </div>
           <div class="flex flex-wrap gap-1.5" id="atlas-filter-bar">
             <button type="button" data-atlas-cat="all" class="atlas-cat-btn tactile-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]">All Modules</button>
@@ -694,73 +694,75 @@
           </div>
         </div>
 
-        <!-- Interactive Visual Phase Matrix -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="atlas-cards-grid">
-          <!-- Populated by JS with custom SVG diagrams and clinical citations -->
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="atlas-cards-grid"></div>
       </section>
 
       <!-- VIEW 5: ALL PROFILES / MULTI-PERSON BOARD -->
       <section id="view-people" class="space-y-6 hidden">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span class="text-xs font-mono uppercase tracking-wider text-faint">Synchronized Multi-Person View</span>
+            <span class="text-xs font-mono uppercase tracking-wider text-faint">Shared Circles</span>
             <h2 class="font-serif text-2xl sm:text-3xl text-ink">All Tracked Profiles</h2>
-            <p class="text-xs sm:text-sm text-sub mt-0.5">Compare where everyone is in their cycle today, understand current mood &amp; relational bandwidth, or import/export individual profiles.</p>
+            <p class="text-xs sm:text-sm text-sub mt-0.5">See where everyone is in their cycle today, understand current emotional &amp; physical bandwidth, or share individual profile files.</p>
           </div>
           <div class="flex items-center gap-2">
-            <label for="people-import-profile-input" class="tactile-btn px-3.5 py-2 rounded-full text-xs font-medium surface-card text-ink cursor-pointer hover:opacity-85">Import Person (.json)</label>
+            <label for="people-import-profile-input" class="tactile-btn px-3.5 py-2 rounded-full text-xs font-medium surface-card text-ink cursor-pointer">Import Person (.json)</label>
             <input id="people-import-profile-input" type="file" accept="application/json" class="hidden" />
-            <button type="button" id="btn-add-profile" class="tactile-btn px-4 py-2 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] hover:opacity-90 transition">+ Add Person</button>
+            <button type="button" id="btn-add-profile" class="tactile-btn px-4 py-2 rounded-full text-xs font-medium bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010]">+ Add Person</button>
           </div>
         </div>
 
-        <div id="multi-profile-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <!-- Populated by JS -->
-        </div>
+        <div id="multi-profile-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
         <div class="surface-card rounded-3xl p-5 sm:p-6">
-          <span class="text-xs font-mono uppercase tracking-wider text-faint">14-Day Household / Partner Alignment</span>
-          <h3 class="font-serif text-xl text-ink mb-4">Side-by-Side Phase Horizon</h3>
+          <span class="text-xs font-mono uppercase tracking-wider text-faint">14-Day Shared Horizon</span>
+          <h3 class="font-serif text-xl text-ink mb-4">Side-by-Side Phase Alignment</h3>
           <div class="overflow-x-auto">
-            <div id="multi-person-timeline" class="min-w-[640px] space-y-3">
-              <!-- Populated by JS -->
-            </div>
+            <div id="multi-person-timeline" style="min-width: 620px;" class="space-y-3"></div>
           </div>
         </div>
       </section>
 
-      <!-- VIEW 6: CYCLE HISTORY & PATTERN CORRELATIONS -->
+      <!-- VIEW 6: CYCLE HISTORY, CORRELATIONS & DOCTOR SNAPSHOT -->
       <section id="view-history" class="space-y-6 hidden">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <div class="lg:col-span-7 surface-card rounded-3xl p-5 sm:p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div>
-                <span class="text-xs font-mono uppercase tracking-wider text-faint">Historical Cycles</span>
-                <h2 class="font-serif text-2xl text-ink">Logged Period Starts &amp; Cycle Lengths</h2>
+          <div class="lg:col-span-7 space-y-5">
+            <div class="surface-card rounded-3xl p-5 sm:p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <span class="text-xs font-mono uppercase tracking-wider text-faint">Cycle Archive</span>
+                  <h2 class="font-serif text-2xl text-ink">Logged Periods &amp; Consistency</h2>
+                </div>
+                <button type="button" id="btn-history-add-period" class="tactile-btn px-3 py-1.5 rounded-xl text-xs font-medium surface-muted text-ink">+ Log Past Period</button>
               </div>
-              <button type="button" id="btn-history-add-period" class="tactile-btn px-3 py-1.5 rounded-xl text-xs font-medium surface-muted text-ink hover:opacity-80">+ Log Past Period</button>
+              <div id="history-cycles-list" class="space-y-3"></div>
             </div>
-            <div id="history-cycles-list" class="space-y-3">
-              <!-- Populated by JS -->
+
+            <!-- Visual Symptom-by-Phase Correlation Matrix (NEW!) -->
+            <div class="surface-card rounded-3xl p-5 sm:p-6">
+              <span class="text-xs font-mono uppercase tracking-wider text-phase">Pattern Recognition</span>
+              <h3 class="font-serif text-xl text-ink mb-2">Signals by Cycle Phase</h3>
+              <p class="text-xs text-sub mb-4">How your logged mood, intimacy, and physical signals cluster across each phase of your cycle.</p>
+              <div id="phase-correlation-matrix" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"></div>
             </div>
           </div>
 
           <div class="lg:col-span-5 space-y-5">
-            <div class="surface-card rounded-3xl p-5 sm:p-6">
-              <span class="text-xs font-mono uppercase tracking-wider text-faint">Cycle Regularity &amp; Vital Sign Check</span>
-              <h3 class="font-serif text-xl text-ink mb-3">Biometric Summary</h3>
-              <div id="history-metrics-summary" class="space-y-2.5 text-xs">
-                <!-- Populated by JS -->
+            <!-- Doctor's Visit Clinical Snapshot Card -->
+            <div id="clinical-snapshot-card" class="surface-card rounded-3xl p-5 sm:p-6">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-mono uppercase tracking-wider text-phase">Clinical Consultation Aid</span>
+                <button type="button" id="btn-copy-doctor-summary" class="tactile-btn text-[11px] font-mono text-ink underline">Copy for Doctor</button>
               </div>
+              <h3 class="font-serif text-xl text-ink mb-3">Vital Sign Summary</h3>
+              <div id="history-metrics-summary" class="space-y-2.5 text-xs"></div>
+              <span id="copy-doctor-feedback" class="text-[10px] font-mono text-[#3E7A6E] mt-2 hidden">Clinical summary copied to clipboard.</span>
             </div>
 
             <div class="surface-card rounded-3xl p-5 sm:p-6">
-              <span class="text-xs font-mono uppercase tracking-wider text-faint">Recent Intimacy, BBT &amp; Daily Logs</span>
+              <span class="text-xs font-mono uppercase tracking-wider text-faint">Journal &amp; Biomarker Stream</span>
               <h3 class="font-serif text-xl text-ink mb-3">Recorded Entries</h3>
-              <div id="history-logs-list" class="space-y-2.5 text-xs max-h-80 overflow-y-auto pr-1">
-                <!-- Populated by JS -->
-              </div>
+              <div id="history-logs-list" class="space-y-2.5 text-xs overflow-y-auto pr-1" style="max-height: 300px;"></div>
             </div>
           </div>
         </div>
@@ -770,29 +772,29 @@
 
   </main>
 
-  <!-- Minimalist Footer -->
+  <!-- Quiet, Non-Defensive Footer -->
   <footer class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 border-t border-subtle text-[11px] text-faint flex flex-wrap items-center justify-between gap-2">
-    <div>Cadence v2.0 — Quiet physiological, intimacy &amp; behavioral cycle studio. Zero cloud, zero telemetry, 100% on-device storage.</div>
-    <div class="font-mono">Offline-ready PWA • Symptothermal &amp; Endocrine Engine</div>
+    <div>Cadence — Thoughtful cycle, intimacy &amp; body literacy.</div>
+    <div class="font-mono">Saved privately on your device</div>
   </footer>
 
   <!-- MODAL 1: ADD / EDIT PROFILE -->
-  <div id="modal-profile" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="surface-card rounded-3xl max-w-md w-full p-6 shadow-xl">
+  <div id="modal-profile" class="fixed inset-0 z-50 bg-black/50 hidden items-center justify-center p-4">
+    <div class="surface-card rounded-3xl max-w-md w-full p-6">
       <div class="flex items-center justify-between pb-3 border-b border-subtle">
         <h3 id="modal-profile-title" class="font-serif text-2xl text-ink">Add Person</h3>
-        <button type="button" id="btn-close-profile-modal" class="text-sub hover:text-ink text-sm font-mono">ESC</button>
+        <button type="button" id="btn-close-profile-modal" class="text-sub text-sm font-mono">ESC</button>
       </div>
       <form id="form-profile" class="space-y-4 mt-4 text-xs">
         <input type="hidden" id="profile-id-input" />
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label for="profile-name-input" class="block font-mono uppercase text-sub mb-1">Name</label>
-            <input id="profile-name-input" type="text" required maxlength="32" placeholder="e.g. Maya" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink text-sm focus:outline-none" />
+            <input id="profile-name-input" type="text" required maxlength="32" placeholder="e.g. Maya" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink text-sm" />
           </div>
           <div>
             <label for="profile-relation-input" class="block font-mono uppercase text-sub mb-1">Role / Tag</label>
-            <select id="profile-relation-input" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink text-sm focus:outline-none">
+            <select id="profile-relation-input" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink text-sm">
               <option value="Self">Self</option>
               <option value="Partner">Partner</option>
               <option value="Family">Family</option>
@@ -804,7 +806,7 @@
 
         <div>
           <label for="profile-goal-input" class="block font-mono uppercase text-sub mb-1">Primary Focus</label>
-          <select id="profile-goal-input" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink text-sm focus:outline-none">
+          <select id="profile-goal-input" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink text-sm">
             <option value="rhythm">Body &amp; Mood Rhythm</option>
             <option value="intimacy">Intimacy &amp; Fertility Awareness (FAM)</option>
             <option value="conception">Trying to Conceive</option>
@@ -815,39 +817,39 @@
         <div class="grid grid-cols-3 gap-3">
           <div>
             <label for="profile-cycle-len" class="block font-mono uppercase text-sub mb-1">Cycle (Days)</label>
-            <input id="profile-cycle-len" type="number" min="20" max="45" required value="28" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+            <input id="profile-cycle-len" type="number" min="20" max="45" required value="28" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
           </div>
           <div>
             <label for="profile-period-len" class="block font-mono uppercase text-sub mb-1">Period (Days)</label>
-            <input id="profile-period-len" type="number" min="2" max="10" required value="5" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+            <input id="profile-period-len" type="number" min="2" max="10" required value="5" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
           </div>
           <div>
             <label for="profile-luteal-len" class="block font-mono uppercase text-sub mb-1">Luteal (Days)</label>
-            <input id="profile-luteal-len" type="number" min="10" max="17" required value="14" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+            <input id="profile-luteal-len" type="number" min="10" max="17" required value="14" class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
           </div>
         </div>
 
         <div>
           <label for="profile-last-period" class="block font-mono uppercase text-sub mb-1">Most Recent Period Start Date</label>
-          <input id="profile-last-period" type="date" required class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+          <input id="profile-last-period" type="date" required class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
         </div>
 
         <div>
-          <label class="block font-mono uppercase text-sub mb-1.5">Avatar Accent Color</label>
+          <label class="block font-mono uppercase text-sub mb-1.5">Botanical Accent</label>
           <div class="flex items-center gap-2.5" id="profile-color-picker">
-            <button type="button" data-color="#C25949" class="color-swatch w-7 h-7 rounded-full bg-[#C25949] ring-offset-2" aria-label="Terracotta"></button>
-            <button type="button" data-color="#3E7A6E" class="color-swatch w-7 h-7 rounded-full bg-[#3E7A6E] ring-offset-2" aria-label="Celadon"></button>
-            <button type="button" data-color="#C4862D" class="color-swatch w-7 h-7 rounded-full bg-[#C4862D] ring-offset-2" aria-label="Marigold"></button>
-            <button type="button" data-color="#7C5879" class="color-swatch w-7 h-7 rounded-full bg-[#7C5879] ring-offset-2" aria-label="Velvet Fig"></button>
-            <button type="button" data-color="#C95B78" class="color-swatch w-7 h-7 rounded-full bg-[#C95B78] ring-offset-2" aria-label="Rosehip"></button>
-            <button type="button" data-color="#4A6B82" class="color-swatch w-7 h-7 rounded-full bg-[#4A6B82] ring-offset-2" aria-label="Mineral Slate"></button>
+            <button type="button" data-color="#C25949" class="color-swatch w-7 h-7 rounded-full bg-[#C25949]" aria-label="Terracotta"></button>
+            <button type="button" data-color="#3E7A6E" class="color-swatch w-7 h-7 rounded-full bg-[#3E7A6E]" aria-label="Celadon"></button>
+            <button type="button" data-color="#C4862D" class="color-swatch w-7 h-7 rounded-full bg-[#C4862D]" aria-label="Marigold"></button>
+            <button type="button" data-color="#7C5879" class="color-swatch w-7 h-7 rounded-full bg-[#7C5879]" aria-label="Velvet Fig"></button>
+            <button type="button" data-color="#C95B78" class="color-swatch w-7 h-7 rounded-full bg-[#C95B78]" aria-label="Rosehip"></button>
+            <button type="button" data-color="#4A6B82" class="color-swatch w-7 h-7 rounded-full bg-[#4A6B82]" aria-label="Mineral Slate"></button>
           </div>
         </div>
 
         <div class="flex items-center justify-between pt-4 border-t border-subtle">
-          <button type="button" id="btn-delete-profile" class="px-3 py-2 rounded-xl text-xs font-medium text-[#C25949] hover:underline hidden">Delete Profile</button>
+          <button type="button" id="btn-delete-profile" class="px-3 py-2 rounded-xl text-xs font-medium text-[#C25949] underline hidden">Delete Profile</button>
           <div class="flex items-center gap-2 ml-auto">
-            <button type="button" id="btn-cancel-profile" class="px-4 py-2 rounded-xl surface-muted text-sub hover:text-ink">Cancel</button>
+            <button type="button" id="btn-cancel-profile" class="px-4 py-2 rounded-xl surface-muted text-sub">Cancel</button>
             <button type="submit" class="px-5 py-2 rounded-full bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] font-medium">Save Profile</button>
           </div>
         </div>
@@ -856,68 +858,68 @@
   </div>
 
   <!-- MODAL 2: QUICK LOG PERIOD START -->
-  <div id="modal-log-period" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="surface-card rounded-3xl max-w-sm w-full p-6 shadow-xl">
+  <div id="modal-log-period" class="fixed inset-0 z-50 bg-black/50 hidden items-center justify-center p-4">
+    <div class="surface-card rounded-3xl max-w-sm w-full p-6">
       <div class="flex items-center justify-between pb-3 border-b border-subtle">
         <h3 class="font-serif text-2xl text-ink">Log Period Start</h3>
-        <button type="button" id="btn-close-period-modal" class="text-sub hover:text-ink text-sm font-mono">ESC</button>
+        <button type="button" id="btn-close-period-modal" class="text-sub text-sm font-mono">ESC</button>
       </div>
       <form id="form-log-period" class="space-y-4 mt-4 text-xs">
-        <p class="text-sub leading-relaxed">Record the first day of full menstrual flow for <strong id="period-modal-person-name" class="text-ink">Profile</strong>. Cadence recalculates cycle averages and future windows automatically.</p>
+        <p class="text-sub leading-relaxed">Record the first day of full menstrual flow for <strong id="period-modal-person-name" class="text-ink">Profile</strong>. Cycle averages and upcoming windows update automatically.</p>
         <div>
           <label for="period-start-date-input" class="block font-mono uppercase text-sub mb-1">Period Start Date</label>
-          <input id="period-start-date-input" type="date" required class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+          <input id="period-start-date-input" type="date" required class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
         </div>
         <div>
           <label for="period-duration-input" class="block font-mono uppercase text-sub mb-1">Bleeding Duration (Days)</label>
-          <input id="period-duration-input" type="number" min="2" max="10" value="5" required class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm focus:outline-none" />
+          <input id="period-duration-input" type="number" min="2" max="10" value="5" required class="w-full px-3 py-2 rounded-xl surface-muted border border-subtle text-ink font-mono text-sm" />
         </div>
         <div class="flex justify-end gap-2 pt-3 border-t border-subtle">
           <button type="button" id="btn-cancel-period-modal" class="px-4 py-2 rounded-xl surface-muted text-sub">Cancel</button>
-          <button type="submit" class="px-5 py-2 rounded-full bg-[#C25949] text-white font-medium hover:opacity-90">Save Period</button>
+          <button type="submit" class="px-5 py-2 rounded-full bg-[#C25949] text-white font-medium">Save Period</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- MODAL 3: VAULT DATA HANDLING & OFFLINE PWA -->
-  <div id="modal-pwa" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="surface-card rounded-3xl max-w-lg w-full p-6 shadow-xl space-y-4 text-xs">
+  <div id="modal-pwa" class="fixed inset-0 z-50 bg-black/50 hidden items-center justify-center p-4">
+    <div class="surface-card rounded-3xl max-w-lg w-full p-6 space-y-4 text-xs">
       <div class="flex items-center justify-between pb-3 border-b border-subtle">
         <div>
-          <span class="text-[10px] font-mono uppercase tracking-widest text-phase">Zero-Cloud Architecture</span>
-          <h3 class="font-serif text-2xl text-ink">Data Vault &amp; Offline PWA</h3>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-phase">Personal Data Sanctuary</span>
+          <h3 class="font-serif text-2xl text-ink">Backup, Export &amp; Install</h3>
         </div>
-        <button type="button" id="btn-close-pwa-modal" class="text-sub hover:text-ink text-sm font-mono">ESC</button>
+        <button type="button" id="btn-close-pwa-modal" class="text-sub text-sm font-mono">ESC</button>
       </div>
 
       <div class="surface-muted rounded-2xl p-4 space-y-1.5">
         <div class="flex items-center justify-between">
-          <span class="font-mono uppercase text-[11px] text-ink">Offline Service Worker &amp; Local Storage</span>
-          <span id="sw-status-badge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-phase-soft text-phase">Ready</span>
+          <span class="font-mono uppercase text-[11px] text-ink">On-Device Storage &amp; Offline Mode</span>
+          <span id="sw-status-badge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-phase-soft text-phase">Offline Ready</span>
         </div>
-        <p class="text-sub leading-relaxed">Inspired by Mozilla’s 10/10 privacy standard (Euki), Cadence never transmits reproductive, intimacy, or BBT logs over the network. Export portable JSON files anytime.</p>
+        <p class="text-sub leading-relaxed">Your profiles, intimacy logs, and temperature records stay strictly on your device. Export a JSON file anytime to back up or transfer between devices.</p>
       </div>
 
       <div class="space-y-2">
-        <div class="font-mono uppercase text-[11px] text-ink">Granular Profile &amp; Vault Portability</div>
+        <div class="font-mono uppercase text-[11px] text-ink">Profile &amp; Vault Portability</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <button type="button" id="btn-export-json" class="tactile-btn px-3.5 py-2.5 rounded-xl bg-[#1C1917] text-[#F7F4EF] dark:bg-[#F4EFEA] dark:text-[#121010] font-medium text-center">Download JSON Backup</button>
-          <button type="button" id="btn-export-single-modal" class="tactile-btn px-3.5 py-2.5 rounded-xl surface-muted text-ink font-medium text-center hover:opacity-85">Export Active Person (.json)</button>
-          <label for="input-import-json" class="tactile-btn px-3.5 py-2.5 rounded-xl surface-muted text-ink font-medium cursor-pointer hover:opacity-85 text-center">Import Profile or Vault (.json)</label>
+          <button type="button" id="btn-export-single-modal" class="tactile-btn px-3.5 py-2.5 rounded-xl surface-muted text-ink font-medium text-center">Export Active Person (.json)</button>
+          <label for="input-import-json" class="tactile-btn px-3.5 py-2.5 rounded-xl surface-muted text-ink font-medium cursor-pointer text-center">Import Profile or Vault (.json)</label>
           <input id="input-import-json" type="file" accept="application/json" class="hidden" />
-          <button type="button" id="btn-reset-demo-data" class="tactile-btn px-3.5 py-2.5 rounded-xl border border-subtle text-sub hover:text-ink text-center">Reset Demo Profiles</button>
+          <button type="button" id="btn-reset-demo-data" class="tactile-btn px-3.5 py-2.5 rounded-xl border border-subtle text-sub text-center">Reset Demo Profiles</button>
         </div>
       </div>
 
       <div class="pt-3 border-t border-subtle flex items-center justify-between">
-        <button type="button" id="btn-wipe-vault" class="text-[#C25949] hover:underline font-mono text-[11px]">Wipe All Profiles (Return to Onboarding)</button>
+        <button type="button" id="btn-wipe-vault" class="text-[#C25949] underline font-mono text-[11px]">Wipe All Profiles (Return to Onboarding)</button>
         <p id="pwa-status-msg" class="text-[11px] font-mono text-[#3E7A6E] hidden"></p>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
