@@ -1,0 +1,188 @@
+/* Cadence v2.0 — Phase-Reactive Female-Gaze Minimalist Design System */
+:root {
+  --bg: #F7F4EF;
+  --bg-elevated: rgba(255, 255, 255, 0.84);
+  --card: #FFFFFF;
+  --muted: #EFEBE4;
+  --border: #E4DDD3;
+  --ink: #1C1917;
+  --sub: #665F58;
+  --faint: #999086;
+
+  /* Phase-reactive dynamic variables (Default: Menstrual Terracotta) */
+  --phase-accent: #C25949;
+  --phase-soft: rgba(194, 89, 73, 0.12);
+  --phase-glow: rgba(194, 89, 73, 0.16);
+  --phase-secondary: #8C4A3E;
+
+  /* Fixed semantic phase colors for charts/legends */
+  --c-menstrual: #C25949;
+  --c-follicular: #3E7A6E;
+  --c-ovulatory: #C4862D;
+  --c-luteal: #7C5879;
+  --c-intimacy: #C95B78;
+}
+
+html.dark {
+  --bg: #121010;
+  --bg-elevated: rgba(27, 24, 24, 0.86);
+  --card: #1B1818;
+  --muted: #252120;
+  --border: #312B29;
+  --ink: #F4EFEA;
+  --sub: #A69D95;
+  --faint: #706861;
+
+  --c-menstrual: #E07464;
+  --c-follicular: #64A89A;
+  --c-ovulatory: #E5A94E;
+  --c-luteal: #B085AC;
+  --c-intimacy: #E47A96;
+}
+
+/* Phase-specific ambient theme shifts */
+body[data-phase="menstrual"] {
+  --phase-accent: var(--c-menstrual);
+  --phase-soft: rgba(194, 89, 73, 0.13);
+  --phase-glow: rgba(194, 89, 73, 0.14);
+}
+body[data-phase="follicular"] {
+  --phase-accent: var(--c-follicular);
+  --phase-soft: rgba(62, 122, 110, 0.13);
+  --phase-glow: rgba(62, 122, 110, 0.14);
+}
+body[data-phase="ovulatory"] {
+  --phase-accent: var(--c-ovulatory);
+  --phase-soft: rgba(196, 134, 45, 0.14);
+  --phase-glow: rgba(196, 134, 45, 0.16);
+}
+body[data-phase="luteal"] {
+  --phase-accent: var(--c-luteal);
+  --phase-soft: rgba(124, 88, 121, 0.13);
+  --phase-glow: rgba(124, 88, 121, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 18% 8%, var(--phase-glow), transparent 48%),
+    radial-gradient(circle at 85% 90%, var(--phase-soft), transparent 52%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.45s ease, color 0.3s ease;
+}
+
+.surface-card {
+  background-color: var(--bg-elevated);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  transition: border-color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.surface-card-interactive:hover {
+  border-color: var(--phase-accent);
+  transform: translateY(-1px);
+}
+
+.surface-muted {
+  background-color: var(--muted);
+}
+
+.border-subtle {
+  border-color: var(--border);
+}
+
+.text-ink {
+  color: var(--ink);
+}
+.text-sub {
+  color: var(--sub);
+}
+.text-faint {
+  color: var(--faint);
+}
+.text-phase {
+  color: var(--phase-accent);
+}
+.bg-phase {
+  background-color: var(--phase-accent);
+}
+.bg-phase-soft {
+  background-color: var(--phase-soft);
+}
+
+/* Micro-interactions & tactile controls */
+.tactile-btn {
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.tactile-btn:active {
+  transform: scale(0.96);
+}
+
+.ring-segment {
+  transition: stroke-width 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease, filter 0.25s ease;
+  cursor: pointer;
+}
+.ring-segment:hover {
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 4px var(--phase-soft));
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); opacity: 0.88; }
+  50% { transform: scale(1.045); opacity: 1; }
+}
+.botanical-breathe {
+  animation: gentlePulse 5.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Range Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--border);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: var(--phase-accent);
+  border: 2.5px solid var(--card);
+  margin-top: -7.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
